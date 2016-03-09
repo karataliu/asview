@@ -1,3 +1,6 @@
+*~
+asview
+
 # Compiled Object files
 *.slo
 *.lo
@@ -26,3 +29,9 @@
 *.exe
 *.out
 *.app
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
