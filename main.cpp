@@ -1,8 +1,10 @@
 #include<iostream>
+#include"asvConfig.h"
+
 using namespace std;
 
 int main()
 {
-	cout<<"1base"<<endl;
+	cout<<"Version:"<<Asview_VERSION_MAJOR<<endl;
 	return 0;
 }
