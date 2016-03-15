@@ -1,19 +1,22 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
+#include <string>
 using namespace std;
 
 class AsvEntry
 {
 public:
-	int index;
+	AsvEntry(string id);
+	string id;
 };
 
 class AsvState
 {
 public:
 	string Uri;
-	vector<AsvEntry> Data;
+	vector<shared_ptr<AsvEntry>> Data;
 };
 

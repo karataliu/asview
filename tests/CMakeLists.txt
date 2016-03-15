@@ -3,7 +3,7 @@ pkg_check_modules (UNITTEST++ REQUIRED unittest++)
 
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
-add_executable(asvtest testmain.cpp TestAsvChain.cpp)
+add_executable(asvtest testmain.cpp AsvChainTest.cpp AsvStateTest.cpp)
 target_link_libraries(asvtest ${UNITTEST++_LIBRARIES} asvlib)
 
 enable_testing()

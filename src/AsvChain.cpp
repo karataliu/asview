@@ -2,7 +2,7 @@
 
 int go()
 {
-	
+	return 0;
 }
 
 int AsvChain::Prev()
