@@ -1,6 +1,6 @@
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
-add_executable(asvtest testmain.cpp AsvChainTest.cpp AsvStateTest.cpp AsvLoaderTest.cpp AsvUriTest.cpp)
+add_executable(asvtest testmain.cpp AsvChainTest.cpp AsvStateTest.cpp AsvProtocolTest.cpp AsvLoaderTest.cpp AsvUriTest.cpp)
 target_link_libraries(asvtest asvlib)
 
 enable_testing()

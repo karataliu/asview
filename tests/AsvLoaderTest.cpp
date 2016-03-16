@@ -27,6 +27,7 @@ class Calc2Protocol : public AsvProtocol
 {
 public:
     Calc2Protocol() : AsvProtocol("calc2") {}
+    void go();
 };
 
 
