@@ -4,13 +4,12 @@
 
 using namespace std;
 
-void test()
-{
-}
+int main1();
 
 int main()
 {
-	test();
+	main1();
+	//test();
 	cout<<"Version:"<<Asview_VERSION_MAJOR<<endl;
 	return 0;
 }
