@@ -1,12 +1,18 @@
 // Loader with protocol
+#include <vector>
 #include <memory>
 #include <list>
+#include "AsvState.h"
 using namespace std;
 
 class AsvProtocol
 {
 public:
-	virtual bool CanHandle(string name) = 0;
+	AsvProtocol(string scheme);
+	bool CanHandle(string name);
+	vector<shared_ptr<AsvEntry>> Load(string path);
+private:
+	string scheme;
 };
 
 class AsvLoader

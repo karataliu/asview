@@ -19,16 +19,14 @@ public:
 
 class Calc1Protocol : public AsvProtocol
 {
-    bool CanHandle(string name){
-        return (name == "calc1");
-    }
+public:
+    Calc1Protocol() : AsvProtocol("calc1") {}
 };
 
 class Calc2Protocol : public AsvProtocol
 {
-    bool CanHandle(string name){
-        return (name == "calc2");
-    }
+public:
+    Calc2Protocol() : AsvProtocol("calc2") {}
 };
 
 
