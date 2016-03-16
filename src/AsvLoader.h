@@ -10,7 +10,7 @@ class AsvProtocol
 public:
 	AsvProtocol(string scheme);
 	bool CanHandle(string name);
-	vector<shared_ptr<AsvEntry>> Load(string path);
+	virtual vector<shared_ptr<AsvEntry>> Load(string path) = 0;
 private:
 	string scheme;
 };
@@ -18,14 +18,10 @@ private:
 class AsvLoader
 {
 public:
-	static AsvLoader* Instance;
-	// shared_ptr<AsvState> Load(string Uri);
+	shared_ptr<AsvState> Load(string Uri);
 	AsvProtocol* GetProtocol(string name);
 	void AddProtocol(AsvProtocol* protocol);
 private:
-	AsvLoader(){}
-	AsvLoader(const AsvLoader&) = delete;
-	AsvLoader& operator=(const AsvLoader&) = delete;
 	list<AsvProtocol*> protocolList;
 };
 
