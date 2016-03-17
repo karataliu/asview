@@ -74,14 +74,15 @@ void AsvWin::Update(const AsvState *state)
     mvwprintw(win, 1, 1, "%s", state->Uri.c_str());
 
     this->freeMenu();
-    itemsCount = state->Data.size();
+    itemsCount = state->Data.size() + 1;
     items = (ITEM **)calloc(itemsCount, sizeof(ITEM *));
-    for(int i = 0; i < itemsCount; ++i)
+    for(int i = 0; i < itemsCount - 1; ++i)
         items[i] = new_item(state->Data[i]->id.c_str(), "     ");
+    items[itemsCount - 1] = new_item(NULL, NULL);
 
     menu = new_menu(items);
     set_menu_win(menu, win);
-    set_menu_sub(menu, derwin(win, itemsCount, 8, 3, 1));
+    set_menu_sub(menu, derwin(win, 16, 32, 3, 1));
     set_menu_mark(menu, " ");
     post_menu(menu);
 }
