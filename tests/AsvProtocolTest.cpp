@@ -28,7 +28,7 @@ TEST_CASE("AsvProtocol works", "[AsvProtocol]" ) {
 	CalcProtocol calc1;
 	auto data = calc1.Load("32");
 	REQUIRE(data.size() == 2);
-	REQUIRE(data[0]->id == "33");
+    REQUIRE(data[0]->id == "33");
 	REQUIRE(data[1]->id == "34");
 }
 

@@ -2,80 +2,118 @@
 #include <stdlib.h>
 #include <string.h>
 #include "AsvState.h"
+#include "AsvChain.h"
 
-int n_choices;
-WINDOW *my_menu_win;
-MENU *my_menu;
-ITEM **my_items;
-
-void init_win()
+class AsvWin
 {
-	initscr();
-	start_color();
-	raw();
+public:
+    AsvWin();
+    ~AsvWin();
+    void Update(const AsvState* state);
+    void MainLoop();
+private:
+    int itemsCount;
+    WINDOW *win;
+    MENU *menu;
+    ITEM **items;
+};
+
+AsvWin::AsvWin()
+{
+    initscr();
+    //start_color();
+    //raw();
+    cbreak();
     noecho();
-	keypad(stdscr, TRUE);
-	
-	my_menu_win = newwin(20, 80, 0, 0);
-    keypad(my_menu_win, TRUE);
-	box(my_menu_win, 0, 0);
-	mvwprintw(my_menu_win, 1, 1, "%s", "My menu1");
-	
-	mvwhline(my_menu_win, 2, 1, ACS_HLINE, 38);
-	mvprintw(LINES - 1, 0, "F11 to exit");
-	refresh();
-	wrefresh(my_menu_win);
+    keypad(stdscr, TRUE);
+
+    win = newwin(20, 80, 0, 0);
+    keypad(win, TRUE);
+    box(win, 0, 0);
+    mvwprintw(win, 1, 1, "%s", "My menu1");
+
+    mvwhline(win, 2, 1, ACS_HLINE, 38);
+    mvprintw(LINES - 1, 0, "F11 to exit");
+    refresh();
+    wrefresh(win);
 }
 
-void set_menu(const AsvState* state)
+AsvWin::~AsvWin()
 {
-	int n_choices, i;
-	
-	n_choices = state->Data.size();
-	
-	my_items = (ITEM **)calloc(n_choices, sizeof(ITEM *));
-	for(i = 0; i < n_choices; ++i)
-		my_items[i] = new_item(state->Data[i]->id.c_str(), "");
-			
-	my_menu = new_menu(my_items);
-	set_menu_win(my_menu, my_menu_win);
-	set_menu_sub(my_menu, derwin(my_menu_win, 2, 38, 3, 1));
-	set_menu_mark(my_menu, " ");
-	post_menu(my_menu);
+    unpost_menu(menu);
+    free_menu(menu);
+    for(auto i = 0; i < itemsCount; ++i)free_item(items[i]);
+    endwin();
 }
 
-void main_loop()
+void AsvWin::Update(const AsvState *state)
+{
+    int i;
+
+    itemsCount = state->Data.size();
+
+    items = (ITEM **)calloc(itemsCount, sizeof(ITEM *));
+    for(i = 0; i < itemsCount; ++i)
+        items[i] = new_item(state->Data[i]->id.c_str(), "");
+
+    menu = new_menu(items);
+    set_menu_win(menu, win);
+    set_menu_sub(menu, derwin(win, 2, 38, 3, 1));
+    set_menu_mark(menu, " ");
+    post_menu(menu);
+}
+
+AsvChain chain;
+shared_ptr<AsvState> s1;
+shared_ptr<AsvState> s2;
+
+void AsvWin::MainLoop()
 {
 	int c;
-	while((c = wgetch(my_menu_win)) != KEY_F(11))
+    while((c = wgetch(win)) != KEY_F(11))
 	{       
 		switch(c)
 		{	case KEY_DOWN:
-			menu_driver(my_menu, REQ_DOWN_ITEM);
-			break;
-		case KEY_UP:
-			menu_driver(my_menu, REQ_UP_ITEM);
-			break;
+                menu_driver(menu, REQ_DOWN_ITEM);
+                break;
+            case KEY_UP:
+                menu_driver(menu, REQ_UP_ITEM);
+                break;
+            case KEY_LEFT:
+                chain.Prev();
+                Update(chain.Current().get());
+                break;
+            case '1':
+                chain.Add(s1);
+                Update(chain.Current().get());
+                break;
+            case '2':
+                chain.Add(s2);
+                Update(chain.Current().get());
+                break;
 		}
-		wrefresh(my_menu_win);
+
+        wrefresh(win);
 	}	
 }
 
 int main1()
 {
-	init_win();
-    int i;
-	auto state = make_shared<AsvState>();
-	state->Data.push_back(make_shared<AsvEntry>("m1"));
-	state->Data.push_back(make_shared<AsvEntry>("m1中+9rr"));
-	set_menu(state.get());
-	main_loop();
-	
-	unpost_menu(my_menu);
-	free_menu(my_menu);
-	for(i = 0; i < n_choices; ++i)
-			free_item(my_items[i]);
-	endwin();
+    s1 = make_shared<AsvState>();
+    s1->Data.push_back(make_shared<AsvEntry>("1a"));
+    s1->Data.push_back(make_shared<AsvEntry>("1b"));
+
+    s2 = make_shared<AsvState>();
+    s2->Data.push_back(make_shared<AsvEntry>("2a"));
+    s2->Data.push_back(make_shared<AsvEntry>("2b"));
+
+    chain.Add(s1);
+
+    AsvWin win;
+    win.Update(s1.get());
+    win.MainLoop();
 	
 	return 0;
 }
+
+
