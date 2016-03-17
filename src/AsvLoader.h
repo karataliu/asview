@@ -13,7 +13,7 @@ public:
 	AsvProtocol(string scheme);
 	bool CanHandle(string name);
 	virtual vector<shared_ptr<AsvEntry>> Load(string path) = 0;
-    string Jump(string path, string id);
+    virtual string Jump(string path, string id);
 private:
 	string scheme;
 };
@@ -21,7 +21,8 @@ private:
 class AsvLoader
 {
 public:
-    shared_ptr<AsvState> Load(string Uri) const;
+    shared_ptr<AsvState> Load(string uri, string append = "") const;
+    shared_ptr<AsvState> Load(shared_ptr<AsvState> state, int index) const;
     AsvProtocol* GetProtocol(string name) const;
 	void AddProtocol(AsvProtocol* protocol);
 private:

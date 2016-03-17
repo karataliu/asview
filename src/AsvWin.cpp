@@ -88,11 +88,12 @@ void AsvWin::Update(const AsvState *state)
 
 void AsvWin::MainLoop()
 {
-	int c;
+    int c;
     while((c = wgetch(win)) != KEY_F(11))
-	{       
-		switch(c)
-		{	case KEY_DOWN:
+    {
+        switch(c)
+        {
+            case KEY_DOWN:
                 menu_driver(menu, REQ_DOWN_ITEM);
                 break;
             case KEY_UP:
@@ -102,20 +103,20 @@ void AsvWin::MainLoop()
                 chain.Prev();
                 Update(chain.Current().get());
                 break;
-            case KEY_ENTER:
+            case 13: // ENTER
                 chain.Add(s1);
-                Update(chain.Current().get());
+                Refresh();
                 break;
             case '1':
                 chain.Add(s1);
-                Update(chain.Current().get());
+                Refresh();
                 break;
             case '2':
                 chain.Add(s2);
-                Update(chain.Current().get());
+                Refresh();
                 break;
-		}
-
+        }
         wrefresh(win);
-	}	
+    }
 }
+

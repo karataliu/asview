@@ -37,3 +37,10 @@ TEST_CASE("AsvProtocol for invalid path", "[AsvProtocol]" ) {
 	auto data = calc2.Load("a");
 	REQUIRE(data.size() == 0);
 }
+
+
+TEST_CASE("AsvProtocol for jump", "[AsvProtocol]" ) {
+    CalcProtocol calc2;
+    string str = calc2.Jump("a", "1");
+    REQUIRE(str == "a/1");
+}

@@ -8,6 +8,11 @@ bool AsvProtocol::CanHandle(string name)
 	return name == scheme;
 }
 
+string AsvProtocol::Jump(string path, string id)
+{
+    return path + "/" + id;
+}
+
 void AsvLoader::AddProtocol(AsvProtocol* protocol)
 {
 	protocolList.push_back(protocol);
@@ -21,7 +26,7 @@ AsvProtocol* AsvLoader::GetProtocol(string name) const
 	return NULL;
 }
 
-shared_ptr<AsvState> AsvLoader::Load(string uri) const
+shared_ptr<AsvState> AsvLoader::Load(string uri, string append) const
 {
     auto state = make_shared<AsvState>();
     state->Uri = uri;
@@ -35,7 +40,13 @@ shared_ptr<AsvState> AsvLoader::Load(string uri) const
         if(protocol == NULL)
             throw string("protocol null");
 
-        state->Data = protocol->Load(asvUri->Path);
+        auto path =asvUri->Path;
+        if(append != ""){
+            path = protocol->Jump(path, append);
+            state->Uri = asvUri->Scheme + "://" + path;
+        }
+
+        state->Data = protocol->Load(path);
     } catch (const string& str){
         vector<shared_ptr<AsvEntry>> d1;
         d1.push_back(make_shared<AsvEntry>(str));
@@ -43,4 +54,9 @@ shared_ptr<AsvState> AsvLoader::Load(string uri) const
     }
 
 	return state; 
+}
+
+shared_ptr<AsvState> AsvLoader::Load(shared_ptr<AsvState> state, int index) const
+{
+    return this->Load(state->Uri, state->Data[index]->id);
 }
