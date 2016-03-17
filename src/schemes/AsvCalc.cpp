@@ -1,6 +1,6 @@
 #include "../AsvLoader.h"
 
-class AsvCalc : AsvProtocol
+class AsvCalc : AsvScheme
 {
 
 };

@@ -1,24 +1,12 @@
 #include "AsvLoader.h"
 #include "AsvUri.h"
 
-AsvProtocol::AsvProtocol(string scheme) : scheme(scheme) {}
-
-bool AsvProtocol::CanHandle(string name)
-{
-	return name == scheme;
-}
-
-string AsvProtocol::Jump(string path, string id)
-{
-    return path + "/" + id;
-}
-
-void AsvLoader::AddProtocol(AsvProtocol* protocol)
+void AsvLoader::AddProtocol(AsvScheme* protocol)
 {
 	protocolList.push_back(protocol);
 }
 
-AsvProtocol* AsvLoader::GetProtocol(string name) const
+AsvScheme* AsvLoader::GetProtocol(string name) const
 {
     for(auto iter = protocolList.begin(); iter!=protocolList.end(); iter++){
 		if((*iter)->CanHandle(name)) return *iter;

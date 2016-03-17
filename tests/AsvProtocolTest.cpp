@@ -3,10 +3,10 @@
 #include <iostream>
 #include "AsvLoader.h"
 
-class CalcProtocol : public AsvProtocol
+class CalcProtocol : public AsvScheme
 {
 public:
-    CalcProtocol() : AsvProtocol("calc2") {}
+    CalcProtocol() : AsvScheme("calc2") {}
 	vector<shared_ptr<AsvEntry>> Load(string path)
 	{
 		vector<shared_ptr<AsvEntry>> data;

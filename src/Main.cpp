@@ -8,10 +8,10 @@ unique_ptr<AsvLoader> GetLoader()
     return loader;
 }
 
-class AsvCalc : public AsvProtocol
+class AsvCalc : public AsvScheme
 {
 public:
-    AsvCalc() : AsvProtocol("calc") {}
+    AsvCalc() : AsvScheme("calc") {}
 
     vector<shared_ptr<AsvEntry>> Load(string path){
         vector<shared_ptr<AsvEntry>> x;

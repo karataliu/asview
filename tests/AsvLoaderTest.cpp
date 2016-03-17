@@ -17,10 +17,10 @@ public:
 };
 
 
-class Calc1Protocol : public AsvProtocol
+class Calc1Protocol : public AsvScheme
 {
 public:
-    Calc1Protocol() : AsvProtocol("calc1") {}
+    Calc1Protocol() : AsvScheme("calc1") {}
         vector<shared_ptr<AsvEntry>> Load(string path)
 	{
 		vector<shared_ptr<AsvEntry>> data;
@@ -28,10 +28,10 @@ public:
 	}
 };
 
-class Calc2Protocol : public AsvProtocol
+class Calc2Protocol : public AsvScheme
 {
 public:
-    Calc2Protocol() : AsvProtocol("calc2") {}
+    Calc2Protocol() : AsvScheme("calc2") {}
     vector<shared_ptr<AsvEntry>> Load(string path)
 	{
 		vector<shared_ptr<AsvEntry>> data;
