@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include "catch.hpp"
 #include "AsvState.h"
 
 TEST_CASE( "AsvEntry works", "[AsvEntry]" ) {
