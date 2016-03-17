@@ -1,5 +1,7 @@
 #include "AsvChain.h"
 
+AsvChain::AsvChain() : index(0) {}
+
 int AsvChain::Prev()
 {
     if (index > 1) return --index;
