@@ -4,7 +4,7 @@ shared_ptr<AsvUri> AsvUri::Create(string uri)
 {
 	auto asvUri = std::make_shared<AsvUri>();
 	auto index = uri.find("://");
-	if (index == string::npos || index == 0 || index + 3 >= uri.size()){
+    if (index == string::npos || index == 0){
 		return NULL;
 	}
 	

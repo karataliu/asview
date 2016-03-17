@@ -1,3 +1,5 @@
+#pragma once
+
 // Loader with protocol
 #include <vector>
 #include <memory>
@@ -11,6 +13,7 @@ public:
 	AsvProtocol(string scheme);
 	bool CanHandle(string name);
 	virtual vector<shared_ptr<AsvEntry>> Load(string path) = 0;
+    string Jump(string path, string id);
 private:
 	string scheme;
 };
@@ -18,8 +21,8 @@ private:
 class AsvLoader
 {
 public:
-	shared_ptr<AsvState> Load(string Uri);
-	AsvProtocol* GetProtocol(string name);
+    shared_ptr<AsvState> Load(string Uri) const;
+    AsvProtocol* GetProtocol(string name) const;
 	void AddProtocol(AsvProtocol* protocol);
 private:
 	list<AsvProtocol*> protocolList;

@@ -13,12 +13,16 @@ TEST_CASE( "AsvUri works", "[AsvUri]" ) {
 	REQUIRE( b != null );
 	REQUIRE( b->Scheme == "calc2" );
 	REQUIRE( b->Path == "3+5" );
+
+    auto c = AsvUri::Create("a://");
+    REQUIRE(c != null);
+    REQUIRE(c->Scheme == "a");
+    REQUIRE(c->Path == "");
 }
 
 TEST_CASE( "AsvUri parse from invalid string should fail", "[AsvUri]" ) {
 	shared_ptr<AsvUri> null = NULL;
 	REQUIRE ( AsvUri::Create("calc2:/3+5") == null );
-	REQUIRE ( AsvUri::Create("a://") == null );
 	REQUIRE ( AsvUri::Create("://b") == null );
 	REQUIRE ( AsvUri::Create("://") == null );
 }

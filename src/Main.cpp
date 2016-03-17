@@ -4,29 +4,31 @@
 
 unique_ptr<AsvLoader> GetLoader()
 {
-    unique_ptr<AsvLoader> loader;
+    unique_ptr<AsvLoader> loader(new AsvLoader());
     return loader;
 }
+
+class AsvCalc : public AsvProtocol
+{
+public:
+    AsvCalc() : AsvProtocol("calc") {}
+
+    vector<shared_ptr<AsvEntry>> Load(string path){
+        vector<shared_ptr<AsvEntry>> x;
+        for(int i = 0; i <=9; i++) x.push_back(make_shared<AsvEntry>(to_string(i)));
+        return x;
+    }
+};
 
 
 int main()
 {
     auto loader = GetLoader();
+    auto calc = new AsvCalc();
+    loader->AddProtocol(calc);
 
-    AsvChain chain;
-    auto s1 = make_shared<AsvState>();
-    s1->Data.push_back(make_shared<AsvEntry>("1a"));
-    s1->Data.push_back(make_shared<AsvEntry>("1b"));
-
-    auto s2 = make_shared<AsvState>();
-    s2->Data.push_back(make_shared<AsvEntry>("2a"));
-    s2->Data.push_back(make_shared<AsvEntry>("2b"));
-
-    chain.Add(s1);
-
-    AsvWin win;
-    win.Update(s1.get());
-    win.MainLoop();
+    AsvWin win(loader.get());
+    win.Start("calc://");
 
     return 0;
 }
