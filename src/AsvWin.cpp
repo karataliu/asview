@@ -104,7 +104,7 @@ void AsvWin::MainLoop()
                 Update(chain.Current().get());
                 break;
             case 13: // ENTER
-                chain.Add(s1);
+                chain.Add(loader->Load(chain.Current(), item_index(current_item(menu))));
                 Refresh();
                 break;
             case '1':

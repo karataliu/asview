@@ -13,6 +13,11 @@ TEST_CASE( "AsvChain works", "[AsvChain]" ) {
 	state2->Data.push_back(std::make_shared<AsvEntry>("2"));
 	state2->Data.push_back(std::make_shared<AsvEntry>("3"));
 	
+    auto state3 = std::make_shared<AsvState>();
+    state3->Uri="calc3://";
+    state3->Data.push_back(std::make_shared<AsvEntry>("2"));
+    state3->Data.push_back(std::make_shared<AsvEntry>("3"));
+
 	AsvChain chain;
 	chain.Add(state1);
 	REQUIRE(chain.Current() == state1);
@@ -23,4 +28,7 @@ TEST_CASE( "AsvChain works", "[AsvChain]" ) {
 	int prev = chain.Prev();
 	REQUIRE(prev == 0 );
 	REQUIRE(chain.Current() == state1);
+
+    chain.Add(state3);
+    REQUIRE(chain.Current() == state3);
 }
