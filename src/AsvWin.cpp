@@ -103,6 +103,10 @@ void AsvWin::MainLoop()
                 chain.Prev();
                 Update(chain.Current().get());
                 break;
+            case KEY_RIGHT:
+                chain.Next();
+                Update(chain.Current().get());
+                break;
             case 13: // ENTER
                 chain.Add(loader->Load(chain.Current(), item_index(current_item(menu))));
                 Refresh();

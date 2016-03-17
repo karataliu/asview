@@ -6,6 +6,12 @@ int AsvChain::Prev()
 	return -1;		
 }
 
+int AsvChain::Next()
+{
+    if (index < list.size()-1) return ++index;
+    return -1;
+}
+
 void AsvChain::Add(shared_ptr<AsvState> state)
 {
     if (index + 1 < list.size()){
