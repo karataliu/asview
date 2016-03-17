@@ -1,15 +1,32 @@
-#include<iostream>
-#include<string>
-#include"AsvConfig.h"
+#include "AsvConfig.h"
+#include "AsvLoader.h"
+#include "AsvWin.h"
 
-using namespace std;
+unique_ptr<AsvLoader> GetLoader()
+{
+    unique_ptr<AsvLoader> loader;
+    return loader;
+}
 
-int main1();
 
 int main()
 {
-	main1();
-	//test();
-	cout<<"Version:"<<Asview_VERSION_MAJOR<<endl;
-	return 0;
+    auto loader = GetLoader();
+
+    AsvChain chain;
+    auto s1 = make_shared<AsvState>();
+    s1->Data.push_back(make_shared<AsvEntry>("1a"));
+    s1->Data.push_back(make_shared<AsvEntry>("1b"));
+
+    auto s2 = make_shared<AsvState>();
+    s2->Data.push_back(make_shared<AsvEntry>("2a"));
+    s2->Data.push_back(make_shared<AsvEntry>("2b"));
+
+    chain.Add(s1);
+
+    AsvWin win;
+    win.Update(s1.get());
+    win.MainLoop();
+
+    return 0;
 }

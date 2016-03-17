@@ -3,20 +3,7 @@
 #include <string.h>
 #include "AsvState.h"
 #include "AsvChain.h"
-
-class AsvWin
-{
-public:
-    AsvWin();
-    ~AsvWin();
-    void Update(const AsvState* state);
-    void MainLoop();
-private:
-    int itemsCount;
-    WINDOW *win;
-    MENU *menu;
-    ITEM **items;
-};
+#include "AsvWin.h"
 
 AsvWin::AsvWin()
 {
@@ -96,24 +83,3 @@ void AsvWin::MainLoop()
         wrefresh(win);
 	}	
 }
-
-int main1()
-{
-    s1 = make_shared<AsvState>();
-    s1->Data.push_back(make_shared<AsvEntry>("1a"));
-    s1->Data.push_back(make_shared<AsvEntry>("1b"));
-
-    s2 = make_shared<AsvState>();
-    s2->Data.push_back(make_shared<AsvEntry>("2a"));
-    s2->Data.push_back(make_shared<AsvEntry>("2b"));
-
-    chain.Add(s1);
-
-    AsvWin win;
-    win.Update(s1.get());
-    win.MainLoop();
-	
-	return 0;
-}
-
-
