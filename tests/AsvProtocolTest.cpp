@@ -1,6 +1,7 @@
 #include <catch.hpp>
 #include <memory>
 #include <iostream>
+#include <stdexcept>
 #include "AsvLoader.h"
 
 class CalcProtocol : public AsvScheme
@@ -13,7 +14,7 @@ public:
 		int val =0;
 		try{
 			val = stoi(path);
-		}catch (const invalid_argument& ia){
+        }catch (const std::invalid_argument& ia){
 			return data;
 		}
 		

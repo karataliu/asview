@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "AsvConfig.h"
 #include "AsvLoader.h"
 #include "AsvWin.h"
@@ -26,7 +27,7 @@ public:
         try{
             val = stoi(path);
             add = stoi(id);
-        }catch (const invalid_argument& ia){
+        }catch (const std::invalid_argument& ia){
             return "-1";
         }
 
