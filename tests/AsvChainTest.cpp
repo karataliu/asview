@@ -26,7 +26,7 @@ TEST_CASE( "AsvChain works", "[AsvChain]" ) {
 	REQUIRE(chain.Current() == state2);
 	
 	int prev = chain.Prev();
-	REQUIRE(prev == 0 );
+    REQUIRE(prev == 1);
 	REQUIRE(chain.Current() == state1);
 
     chain.Add(state3);

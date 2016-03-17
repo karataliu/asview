@@ -12,6 +12,6 @@ public:
 	shared_ptr<AsvState> Current();
 	void Add(shared_ptr<AsvState> state); 
 private:
-	int index = -1;
+    size_t index = 0 ;
 	vector<shared_ptr<AsvState>> list;
 };

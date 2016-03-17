@@ -2,21 +2,21 @@
 
 int AsvChain::Prev()
 {
-	if (index > 0) return --index;
+    if (index > 1) return --index;
 	return -1;		
 }
 
 int AsvChain::Next()
 {
-    if (index < list.size()-1) return ++index;
+    if (index < list.size()) return ++index;
     return -1;
 }
 
 void AsvChain::Add(shared_ptr<AsvState> state)
 {
-    if (index + 1 < list.size()){
+    if (index < list.size()){
         auto itr = list.begin();
-        int idx = index + 1;
+        int idx = index;
         while(--idx >= 0) ++itr;
         while(itr!=list.end()) itr = list.erase(itr);
     }
@@ -27,5 +27,5 @@ void AsvChain::Add(shared_ptr<AsvState> state)
 
 shared_ptr<AsvState> AsvChain::Current()
 {
-	return list[index];
+    return list[index-1];
 }
