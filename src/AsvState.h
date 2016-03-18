@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <string>
+#include "AsvUri.h"
 using namespace std;
 
 class AsvEntry
@@ -18,9 +19,8 @@ class AsvState
 {
 public:
     AsvState(string uri);
-	string Uri;
-    string Scheme;
-    string Path;
+    string Uri;
+    unique_ptr<AsvUri> BoundUri;
 	vector<shared_ptr<AsvEntry>> Data;
 };
 

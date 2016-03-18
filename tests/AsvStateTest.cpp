@@ -19,16 +19,16 @@ TEST_CASE( "AsvState works", "[AsvState]" ) {
 	REQUIRE( state.Data[0] == entry1 );
 	REQUIRE( state.Data[1]->id == "2" );
 
-    REQUIRE(state.Scheme == "calc");
-    REQUIRE(state.Path == "1+1");
+    REQUIRE(state.BoundUri->Scheme == "calc");
+    REQUIRE(state.BoundUri->Path == "1+1");
 }
 
 
 TEST_CASE( "AsvState with invalid input", "[AsvState]" ) {
+    unique_ptr<AsvUri> null;
     AsvState state("bz");
 
     REQUIRE(state.Uri == "bz" );
     REQUIRE(state.Data.size() == 0 );
-    REQUIRE(state.Scheme == "");
-    REQUIRE(state.Path == "");
+    REQUIRE(state.BoundUri == null);
 }
