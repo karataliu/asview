@@ -16,11 +16,9 @@ vector<shared_ptr<AsvEntry>> AsvFile::Load(string path){
     DIR *dir;
     struct dirent *ent;
 
-    if ((dir = opendir (path.c_str())) != NULL) {
-        //int i=0;
+    if ((dir = opendir (path.c_str())) != NULL) {        
       while ((ent = readdir (dir)) != NULL) {
         x.push_back(make_shared<AsvEntry>(string(ent->d_name)));
-        //if (++i>5)break;
       }
       closedir(dir);
     } else {

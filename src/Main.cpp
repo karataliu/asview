@@ -7,7 +7,7 @@ int main()
     auto loader = GetLoader();  
     AsvWin win(loader.get());
     // win.Start("calc://0");
-    win.Start("file:///home/karata/");
+    win.Start("file:///home/karata");
 
     return 0;
 }

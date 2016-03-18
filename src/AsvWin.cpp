@@ -100,6 +100,12 @@ void AsvWin::MainLoop()
             case KEY_UP:
                 menu_driver(menu, REQ_UP_ITEM);
                 break;
+            case KEY_NPAGE:
+                    menu_driver(menu, REQ_SCR_DPAGE);
+                    break;
+            case KEY_PPAGE:
+                    menu_driver(menu, REQ_SCR_UPAGE);
+                    break;
             case KEY_LEFT:
                 chain.Prev();
                 Update(chain.Current().get());
