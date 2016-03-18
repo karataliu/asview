@@ -10,7 +10,7 @@ public:
     AsvChain();
 	int Prev();
     int Next();
-    const AsvState* Current();
+    AsvState* Current();
 	void Add(shared_ptr<AsvState> state); 
 private:
     size_t index;

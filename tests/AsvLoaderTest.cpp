@@ -72,16 +72,18 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
 	auto loader = make_shared<AsvLoader>();
     loader->AddProtocol(Singleton<Calc2Protocol>::Instance());
 
-    auto state = loader->Load("calc2://29");
-    REQUIRE (state->Uri == "calc2://29");
-    auto data = state->Data;
+    auto s1 = unique_ptr<AsvState>(new AsvState("calc2://29"));
+    loader->Load(s1.get());
+    REQUIRE (s1->Uri == "calc2://29");
+    auto data = s1->Data;
     REQUIRE (data.size() == 2);
     REQUIRE (data[0]->id == "1");
     REQUIRE (data[1]->id == "2");
 
-    state = loader->Load("calc2://39");
-    REQUIRE (state->Uri == "calc2://39");
-    data = state->Data;
+    auto s2 = unique_ptr<AsvState>(new AsvState("calc2://39"));
+    loader->Load(s2.get());
+    REQUIRE (s2->Uri == "calc2://39");
+    data = s2->Data;
     REQUIRE (data.size() == 3);
     REQUIRE (data[0]->id == "1");
     REQUIRE (data[1]->id == "2");
@@ -92,10 +94,11 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
 TEST_CASE( "AsvLoader Load with jump", "[AsvLoader]" ) {
     auto loader = make_shared<AsvLoader>();
     loader->AddProtocol(Singleton<Calc2Protocol>::Instance());
-    auto state = loader->Load("calc2://49");
-    REQUIRE (state->Uri == "calc2://49");
+    auto s1 = unique_ptr<AsvState>(new AsvState("calc2://49"));
+    loader->Load(s1.get());
+    REQUIRE (s1->Uri == "calc2://49");
 
-    state = loader->Load(state.get(), 1);
-    REQUIRE (state->Uri == "calc2://49+2");
+    auto s2 = loader->Load(s1.get(), 1);
+    REQUIRE (s2->Uri == "calc2://49+2");
 
 }

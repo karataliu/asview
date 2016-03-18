@@ -11,8 +11,8 @@ using namespace std;
 class AsvLoader
 {
 public:
-    shared_ptr<AsvState> Load(string uri, string append = "") const;
-    shared_ptr<AsvState> Load(const AsvState* state, int index) const;
+    void Load(AsvState* state, string append = "") const;
+    shared_ptr<AsvState> Load(AsvState* state, int index) const;
     AsvScheme* GetProtocol(string name) const;
     void AddProtocol(AsvScheme* protocol);
 private:

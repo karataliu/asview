@@ -52,7 +52,8 @@ void AsvWin::freeMenu()
 
 void AsvWin::Start(string uri)
 {
-    auto state = this->loader->Load(uri);
+    auto state = std::make_shared<AsvState>(uri);
+    this->loader->Load(state.get());
     chain.Add(state);
     Refresh();
     this->MainLoop();

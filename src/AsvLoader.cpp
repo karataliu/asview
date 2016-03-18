@@ -1,5 +1,4 @@
 #include "AsvLoader.h"
-#include "AsvUri.h"
 
 void AsvLoader::AddProtocol(AsvScheme* protocol)
 {
@@ -14,20 +13,15 @@ AsvScheme* AsvLoader::GetProtocol(string name) const
 	return NULL;
 }
 
-shared_ptr<AsvState> AsvLoader::Load(string uri, string append) const
+void AsvLoader::Load(AsvState* state, string append) const
 {
-    auto state = make_shared<AsvState>(uri);
-
     try{
-        auto asvUri = AsvUri::Create(uri);
-        if(asvUri == NULL)
-            throw string("uri null");
-
+        const AsvUri* asvUri = state->BoundUri.get();
         auto protocol = this->GetProtocol(asvUri->Scheme);
         if(protocol == NULL)
             throw string("protocol null");
 
-        auto path =asvUri->Path;
+        auto path = asvUri->Path;
         if(append != ""){
             path = protocol->Jump(path, append);
             state->Uri = asvUri->Scheme + "://" + path;
@@ -39,11 +33,11 @@ shared_ptr<AsvState> AsvLoader::Load(string uri, string append) const
         d1.push_back(make_shared<AsvEntry>(str));
         state->Data = d1;
     }
-
-	return state; 
 }
 
-shared_ptr<AsvState> AsvLoader::Load(const AsvState* state, int index) const
+shared_ptr<AsvState> AsvLoader::Load(AsvState* state, int index) const
 {
-    return this->Load(state->Uri, state->Data[index]->id);
+    auto s1 = std::make_shared<AsvState>(state->Uri);
+    this->Load(s1.get(), state->Data[index]->id);
+    return s1;
 }
