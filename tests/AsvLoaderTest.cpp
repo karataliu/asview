@@ -95,7 +95,7 @@ TEST_CASE( "AsvLoader Load with jump", "[AsvLoader]" ) {
     auto state = loader->Load("calc2://49");
     REQUIRE (state->Uri == "calc2://49");
 
-    state = loader->Load(state, 1);
+    state = loader->Load(state.get(), 1);
     REQUIRE (state->Uri == "calc2://49+2");
 
 }

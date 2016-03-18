@@ -27,7 +27,7 @@ void AsvChain::Add(shared_ptr<AsvState> state)
 	++index;
 }
 
-shared_ptr<AsvState> AsvChain::Current()
+const AsvState* AsvChain::Current()
 {
-    return list[index-1];
+    return list[index-1].get();
 }

@@ -62,7 +62,7 @@ void AsvWin::Start(string uri)
 
 void AsvWin::Refresh()
 {
-    Update(chain.Current().get());
+    Update(chain.Current());
 }
 
 void AsvWin::Update(const AsvState *state)
@@ -108,11 +108,11 @@ void AsvWin::MainLoop()
                     break;
             case KEY_LEFT:
                 chain.Prev();
-                Update(chain.Current().get());
+                Refresh();
                 break;
             case KEY_RIGHT:
                 chain.Next();
-                Update(chain.Current().get());
+                Refresh();
                 break;
             case 13: // ENTER
                 chain.Add(loader->Load(chain.Current(), item_index(current_item(menu))));

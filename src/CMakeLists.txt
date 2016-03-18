@@ -1,7 +1,7 @@
 configure_file (
     "AsvConfig.h.in"
     "${PROJECT_BINARY_DIR}/AsvConfig.h"
-    )
+)
 
 include_directories("${PROJECT_BINARY_DIR}")
 

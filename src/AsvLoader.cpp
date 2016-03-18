@@ -44,7 +44,7 @@ shared_ptr<AsvState> AsvLoader::Load(string uri, string append) const
 	return state; 
 }
 
-shared_ptr<AsvState> AsvLoader::Load(shared_ptr<AsvState> state, int index) const
+shared_ptr<AsvState> AsvLoader::Load(const AsvState* state, int index) const
 {
     return this->Load(state->Uri, state->Data[index]->id);
 }

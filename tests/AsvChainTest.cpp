@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include <memory>
-#include "AsvChain.h"
+#include "../src/AsvChain.h"
 
 TEST_CASE( "AsvChain works", "[AsvChain]" ) {
 	auto state1 = std::make_shared<AsvState>();
@@ -20,15 +20,15 @@ TEST_CASE( "AsvChain works", "[AsvChain]" ) {
 
 	AsvChain chain;
 	chain.Add(state1);
-	REQUIRE(chain.Current() == state1);
-	
+    REQUIRE(chain.Current() == state1.get());
+    // Current -1
 	chain.Add(state2);
-	REQUIRE(chain.Current() == state2);
+    REQUIRE(chain.Current() == state2.get());
 	
 	int prev = chain.Prev();
     REQUIRE(prev == 1);
-	REQUIRE(chain.Current() == state1);
+    REQUIRE(chain.Current() == state1.get());
 
     chain.Add(state3);
-    REQUIRE(chain.Current() == state3);
+    REQUIRE(chain.Current() == state3.get());
 }
