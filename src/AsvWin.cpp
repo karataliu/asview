@@ -88,6 +88,7 @@ void AsvWin::Update(const AsvState *state)
 
 void AsvWin::MainLoop()
 {
+    AsvState* sn;
     int c;
     while((c = wgetch(win)) != KEY_F(11))
     {
@@ -114,7 +115,9 @@ void AsvWin::MainLoop()
                 Refresh();
                 break;
             case 13: // ENTER
-                chain.Add(loader->Load(chain.Current(), item_index(current_item(menu))));
+                sn = loader->Load1(chain.Current(), item_index(current_item(menu)));
+                loader->Load(sn);
+                chain.Add(shared_ptr<AsvState>(sn));
                 Refresh();
                 break;
             case '1':

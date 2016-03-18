@@ -6,5 +6,5 @@ class AsvFile : public AsvScheme
 {
 public:
     AsvFile();
-    vector<shared_ptr<AsvEntry>> Load(string path);
+    vector<shared_ptr<AsvEntry>> Load(string path) const;
 };

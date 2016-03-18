@@ -1,11 +1,11 @@
 #include "AsvState.h"
 #include "AsvUri.h"
-
-AsvEntry::AsvEntry(string id) : id(id) {}
+#include "AsvLoaderFactory.h"
 
 AsvState::AsvState(string uri) : Uri(uri)
 {
     auto asvUri = AsvUri::Create(uri);
     if(!asvUri) return;
+    this->Scheme = GetLoader()->GetProtocol(asvUri->Scheme);
     this->BoundUri = std::move(asvUri);
 }

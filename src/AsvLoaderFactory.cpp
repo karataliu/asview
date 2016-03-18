@@ -2,10 +2,16 @@
 #include "schemes/AsvCalc.h"
 #include "schemes/AsvFile.h"
 
-unique_ptr<AsvLoader> GetLoader()
+int init = 0;
+
+AsvLoader* GetLoader()
 {
-    unique_ptr<AsvLoader> loader(new AsvLoader());
-    loader->AddProtocol(new AsvCalc());
-    loader->AddProtocol(new AsvFile());
-    return loader;
+    static unique_ptr<AsvLoader> loader(new AsvLoader());
+    if(init==0){
+        loader->AddProtocol(new AsvCalc());
+        loader->AddProtocol(new AsvFile());
+        init=1;
+    }
+
+    return loader.get();
 }

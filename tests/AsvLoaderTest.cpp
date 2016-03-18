@@ -21,7 +21,7 @@ class Calc1Protocol : public AsvScheme
 {
 public:
     Calc1Protocol() : AsvScheme("calc1") {}
-        vector<shared_ptr<AsvEntry>> Load(string path)
+        vector<shared_ptr<AsvEntry>> Load(string path) const
 	{
 		vector<shared_ptr<AsvEntry>> data;
 		return data;
@@ -32,7 +32,7 @@ class Calc2Protocol : public AsvScheme
 {
 public:
     Calc2Protocol() : AsvScheme("calc2") {}
-    vector<shared_ptr<AsvEntry>> Load(string path)
+    vector<shared_ptr<AsvEntry>> Load(string path) const
 	{
 		vector<shared_ptr<AsvEntry>> data;
         int cou = path[0] - '0';
@@ -42,7 +42,7 @@ public:
 		return data;
 	}
 
-    string Jump(string path, string id)
+    string Jump(string path, string id) const
     {
         return path + "+" + id;
     }
@@ -98,7 +98,7 @@ TEST_CASE( "AsvLoader Load with jump", "[AsvLoader]" ) {
     loader->Load(s1.get());
     REQUIRE (s1->Uri == "calc2://49");
 
-    auto s2 = loader->Load(s1.get(), 1);
+    auto s2 = loader->Load1(s1.get(), 1);
     REQUIRE (s2->Uri == "calc2://49+2");
 
 }

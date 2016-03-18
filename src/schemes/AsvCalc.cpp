@@ -11,13 +11,14 @@ using namespace std;
 
 AsvCalc::AsvCalc(): AsvScheme("calc") {}
 
-vector<shared_ptr<AsvEntry>> AsvCalc::Load(string path){
+vector<shared_ptr<AsvEntry>> AsvCalc::Load(string path) const
+{
     vector<shared_ptr<AsvEntry>> x;
     for(int i = 0; i <=9; i++) x.push_back(make_shared<AsvEntry>(to_string(9 - i)));
     return x;
 }
 
-string AsvCalc::Jump(string path, string id)
+string AsvCalc::Jump(string path, string id) const
 {
     int val = 0;
     int add = 0;

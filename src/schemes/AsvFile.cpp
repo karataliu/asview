@@ -10,7 +10,8 @@ using namespace std;
 
 AsvFile::AsvFile(): AsvScheme("file") {}
 
-vector<shared_ptr<AsvEntry>> AsvFile::Load(string path){
+vector<shared_ptr<AsvEntry>> AsvFile::Load(string path) const
+{
     vector<shared_ptr<AsvEntry>> x;
 
     DIR *dir;

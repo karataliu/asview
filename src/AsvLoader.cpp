@@ -13,21 +13,16 @@ AsvScheme* AsvLoader::GetProtocol(string name) const
 	return NULL;
 }
 
-void AsvLoader::Load(AsvState* state, string append) const
+void AsvLoader::Load(AsvState* state) const
 {
     try{
         const AsvUri* asvUri = state->BoundUri.get();
         auto protocol = this->GetProtocol(asvUri->Scheme);
+        // auto protocol = state->Scheme;
         if(protocol == NULL)
             throw string("protocol null");
 
-        auto path = asvUri->Path;
-        if(append != ""){
-            path = protocol->Jump(path, append);
-            state->Uri = asvUri->Scheme + "://" + path;
-        }
-
-        state->Data = protocol->Load(path);
+        state->Data = protocol->Load(asvUri->Path);
     } catch (const string& str){
         vector<shared_ptr<AsvEntry>> d1;
         d1.push_back(make_shared<AsvEntry>(str));
@@ -35,9 +30,21 @@ void AsvLoader::Load(AsvState* state, string append) const
     }
 }
 
-shared_ptr<AsvState> AsvLoader::Load(AsvState* state, int index) const
+AsvState* AsvLoader::Load1(AsvState* state, size_t index) const
 {
-    auto s1 = std::make_shared<AsvState>(state->Uri);
-    this->Load(s1.get(), state->Data[index]->id);
-    return s1;
+    if (index >= state->Data.size()){
+        throw "invalid index";
+    }
+
+    const AsvUri* asvUri = state->BoundUri.get();
+    auto protocol = this->GetProtocol(asvUri->Scheme);
+    if(protocol == NULL)
+        throw string("protocol null");
+
+    auto path = asvUri->Path;
+    path = protocol->Jump(path, state->Data[index]->id);
+    auto newuri = asvUri->Scheme + "://" + path;
+
+    auto s2 = new AsvState(newuri);
+    return s2;
 }

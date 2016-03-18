@@ -5,7 +5,7 @@ configure_file (
 
 include_directories("${PROJECT_BINARY_DIR}")
 
-add_library(asvlib AsvChain.cpp AsvState.cpp AsvScheme.cpp AsvLoader.cpp AsvLoaderFactory.cpp AsvUri.cpp schemes/AsvCalc.cpp schemes/AsvFile.cpp)
+add_library(asvlib AsvChain.cpp AsvEntry.cpp AsvState.cpp AsvScheme.cpp AsvLoader.cpp AsvLoaderFactory.cpp AsvUri.cpp schemes/AsvCalc.cpp schemes/AsvFile.cpp)
 #target_compile_features(asvlib PUBLIC cxx_range_for)
 
 find_package(PkgConfig)

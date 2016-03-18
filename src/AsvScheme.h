@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <list>
-#include "AsvState.h"
+#include "AsvEntry.h"
 using namespace std;
 
 class AsvScheme
@@ -11,8 +11,8 @@ class AsvScheme
 public:
     AsvScheme(string scheme);
     bool CanHandle(string name);
-    virtual vector<shared_ptr<AsvEntry>> Load(string path) = 0;
-    virtual string Jump(string path, string id);
+    virtual vector<shared_ptr<AsvEntry>> Load(string path) const = 0;
+    virtual string Jump(string path, string id) const;
 private:
     string scheme;
 };

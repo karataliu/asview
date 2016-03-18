@@ -4,8 +4,7 @@
 
 int main()
 {
-    auto loader = GetLoader();  
-    AsvWin win(loader.get());
+    AsvWin win(GetLoader());
     // win.Start("calc://0");
     win.Start("file:///home/karata");
 

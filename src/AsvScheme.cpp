@@ -7,7 +7,7 @@ bool AsvScheme::CanHandle(string name)
     return name == scheme;
 }
 
-string AsvScheme::Jump(string path, string id)
+string AsvScheme::Jump(string path, string id) const
 {
     return path + "/" + id;
 }

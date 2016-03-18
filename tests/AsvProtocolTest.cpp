@@ -8,7 +8,7 @@ class CalcProtocol : public AsvScheme
 {
 public:
     CalcProtocol() : AsvScheme("calc2") {}
-	vector<shared_ptr<AsvEntry>> Load(string path)
+    vector<shared_ptr<AsvEntry>> Load(string path) const
 	{
 		vector<shared_ptr<AsvEntry>> data;
 		int val =0;
