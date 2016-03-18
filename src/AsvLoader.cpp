@@ -13,12 +13,23 @@ AsvScheme* AsvLoader::GetProtocol(string name) const
 	return NULL;
 }
 
+AsvState* AsvLoader::CreateState(const string& uri) const
+{
+    auto state = new AsvState(uri);
+    auto scheme = this->GetProtocol(state->BoundUri->Scheme);
+    if (scheme == NULL)
+        throw string("scheme null");
+    state->Scheme = scheme;
+
+    return state;
+}
+
 void AsvLoader::Load(AsvState* state) const
 {
     try{
         const AsvUri* asvUri = state->BoundUri.get();
-        auto protocol = this->GetProtocol(asvUri->Scheme);
-        // auto protocol = state->Scheme;
+        // auto protocol = this->GetProtocol(asvUri->Scheme);
+        auto protocol = state->Scheme;
         if(protocol == NULL)
             throw string("protocol null");
 
@@ -46,5 +57,6 @@ AsvState* AsvLoader::Load1(AsvState* state, size_t index) const
     auto newuri = asvUri->Scheme + "://" + path;
 
     auto s2 = new AsvState(newuri);
+    s2->Scheme = state->Scheme;
     return s2;
 }

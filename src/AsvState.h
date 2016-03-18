@@ -9,7 +9,6 @@
 #include "AsvScheme.h"
 using namespace std;
 
-
 class AsvState
 {
 public:
