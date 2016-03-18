@@ -26,13 +26,11 @@ AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
     menu = NULL;
 
     // For testing:
-    s1 = make_shared<AsvState>();
-    s1->Uri="s1";
+    s1 = make_shared<AsvState>("s1");
     s1->Data.push_back(make_shared<AsvEntry>("1a"));
     s1->Data.push_back(make_shared<AsvEntry>("1b"));
 
-    s2 = make_shared<AsvState>();
-    s2->Uri="s2";
+    s2 = make_shared<AsvState>("s2");
     s2->Data.push_back(make_shared<AsvEntry>("2a"));
     s2->Data.push_back(make_shared<AsvEntry>("2b"));
 }

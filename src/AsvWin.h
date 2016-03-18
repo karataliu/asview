@@ -21,7 +21,6 @@ private:
     void freeMenu();
     AsvChain chain;
     const AsvLoader* loader;
-    string uri;
     int itemsCount;
     WINDOW *win;
     MENU *menu;

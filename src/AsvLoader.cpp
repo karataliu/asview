@@ -16,8 +16,7 @@ AsvScheme* AsvLoader::GetProtocol(string name) const
 
 shared_ptr<AsvState> AsvLoader::Load(string uri, string append) const
 {
-    auto state = make_shared<AsvState>();
-    state->Uri = uri;
+    auto state = make_shared<AsvState>(uri);
 
     try{
         auto asvUri = AsvUri::Create(uri);
