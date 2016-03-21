@@ -17,5 +17,7 @@ public:
     unique_ptr<AsvUri> BoundUri;
     const AsvScheme* Scheme;
 	vector<shared_ptr<AsvEntry>> Data;
+
+    AsvState* Load1(size_t index) const;
 };
 

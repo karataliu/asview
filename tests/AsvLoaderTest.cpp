@@ -113,7 +113,7 @@ TEST_CASE( "AsvLoader Load with jump", "[AsvLoader]" ) {
     loader.Load(s1);
     REQUIRE (s1->Uri == "calc2://49");
 
-    auto s2 = loader.Load1(s1, 1);
+    auto s2 = s1->Load1(1);
     REQUIRE (s2->Uri == "calc2://49+2");
 
 }

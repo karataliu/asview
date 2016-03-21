@@ -119,7 +119,7 @@ void AsvWin::MainLoop()
                 Refresh();
                 break;
             case 13: // ENTER
-                sn = loader->Load1(chain.Current(), item_index(current_item(menu)));
+                sn = chain.Current()->Load1(item_index(current_item(menu)));
                 loader->Load(sn);
                 chain.Add(shared_ptr<AsvState>(sn));
                 Refresh();

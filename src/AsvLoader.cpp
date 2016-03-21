@@ -29,23 +29,3 @@ void AsvLoader::Load(AsvState* state) const
         state->Data = d1;
     }
 }
-
-AsvState* AsvLoader::Load1(AsvState* state, size_t index) const
-{
-    if (index >= state->Data.size()){
-        throw "invalid index";
-    }
-
-    const AsvUri* asvUri = state->BoundUri.get();
-    auto protocol = this->GetProtocol(asvUri->Scheme);
-    if(protocol == NULL)
-        throw string("protocol null");
-
-    auto path = asvUri->Path;
-    path = protocol->Jump(path, state->Data[index]->id);
-    auto newuri = asvUri->Scheme + "://" + path;
-
-    auto s2 = new AsvState(newuri);
-    s2->Scheme = state->Scheme;
-    return s2;
-}
