@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include <memory>
 #include "AsvLoader.h"
+#include "AsvLoaderFactory.h"
 
 template <typename T>
 class Singleton
@@ -74,7 +75,9 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
 
     //auto s1 = unique_ptr<AsvState>(new AsvState("calc2://29"));
     //loader->Load(s1.get());
-    auto s1 = loader->CreateState("calc2://29");
+    // auto s1 = loader->CreateState("calc2://29");
+    auto s1 = CreateState("calc2://29", loader.get());
+
     loader->Load(s1);
     REQUIRE (s1->Uri == "calc2://29");
     auto data = s1->Data;
@@ -84,7 +87,9 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
 
     //auto s2 = unique_ptr<AsvState>(new AsvState("calc2://39"));
     //loader->Load(s2.get());
-    auto s2 = loader->CreateState("calc2://39");
+    // auto s2 = loader->CreateState("calc2://39");
+    auto s2 = CreateState("calc2://39", loader.get());
+
     loader->Load(s2);
     REQUIRE (s2->Uri == "calc2://39");
     data = s2->Data;
@@ -96,15 +101,19 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
 
 
 TEST_CASE( "AsvLoader Load with jump", "[AsvLoader]" ) {
-    auto loader = make_shared<AsvLoader>();
-    loader->AddProtocol(Singleton<Calc2Protocol>::Instance());
+    //auto loader = make_shared<AsvLoader>();
+    //loader->AddProtocol(Singleton<Calc2Protocol>::Instance());
+    AsvLoader loader;
+    loader.AddProtocol(Singleton<Calc2Protocol>::Instance());
     // auto s1 = unique_ptr<AsvState>(new AsvState("calc2://49"));
     // loader->Load(s1.get());
-    auto s1 = loader->CreateState("calc2://49");
-    loader->Load(s1);
+    //auto s1 = loader->CreateState("calc2://49");
+    auto s1 = CreateState("calc2://49", &loader);
+
+    loader.Load(s1);
     REQUIRE (s1->Uri == "calc2://49");
 
-    auto s2 = loader->Load1(s1, 1);
+    auto s2 = loader.Load1(s1, 1);
     REQUIRE (s2->Uri == "calc2://49+2");
 
 }

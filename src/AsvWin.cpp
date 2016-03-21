@@ -4,6 +4,7 @@
 #include "AsvState.h"
 #include "AsvChain.h"
 #include "AsvWin.h"
+#include "AsvLoaderFactory.h"
 
 AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
 {
@@ -54,7 +55,8 @@ void AsvWin::Start(string uri)
 {
     // auto state = std::make_shared<AsvState>(uri);
     // this->loader->Load(state.get());
-    auto state = this->loader->CreateState(uri);
+    //auto state = this->loader->CreateState(uri);
+    auto state = CreateState(uri, this->loader);
     this->loader->Load(state);
     chain.Add(shared_ptr<AsvState>(state));
     Refresh();

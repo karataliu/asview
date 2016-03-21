@@ -15,3 +15,16 @@ AsvLoader* GetLoader()
 
     return loader.get();
 }
+
+
+
+AsvState* CreateState(const string& uri, const AsvLoader* loader)
+{
+    auto state = new AsvState(uri);
+    auto scheme = loader->GetProtocol(state->BoundUri->Scheme);
+    if (scheme == NULL)
+        throw string("scheme null");
+    state->Scheme = scheme;
+
+    return state;
+}

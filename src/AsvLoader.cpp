@@ -13,17 +13,6 @@ AsvScheme* AsvLoader::GetProtocol(string name) const
 	return NULL;
 }
 
-AsvState* AsvLoader::CreateState(const string& uri) const
-{
-    auto state = new AsvState(uri);
-    auto scheme = this->GetProtocol(state->BoundUri->Scheme);
-    if (scheme == NULL)
-        throw string("scheme null");
-    state->Scheme = scheme;
-
-    return state;
-}
-
 void AsvLoader::Load(AsvState* state) const
 {
     try{

@@ -14,7 +14,6 @@ public:
     void Load(AsvState* state) const;
     AsvState* Load1(AsvState* state, size_t index) const;
 
-    AsvState* CreateState(const string& uri) const;
     AsvScheme* GetProtocol(string name) const;
     void AddProtocol(AsvScheme* protocol);
 private:
