@@ -46,3 +46,14 @@ AsvState* AsvState::Load1(size_t index) const
     s2->Scheme = this->Scheme;
     return s2;
 }
+
+AsvState* AsvState::Create(const string& uri, const AsvLoader* loader)
+{
+    auto state = new AsvState(uri);
+    auto scheme = loader->GetProtocol(state->BoundUri->Scheme);
+    if (scheme == NULL)
+        throw string("scheme null");
+    state->Scheme = scheme;
+
+    return state;
+}

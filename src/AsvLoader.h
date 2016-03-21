@@ -1,10 +1,6 @@
 #pragma once
 
-// Loader with protocol
-#include <vector>
-#include <memory>
 #include <list>
-#include "AsvState.h"
 #include "AsvScheme.h"
 using namespace std;
 

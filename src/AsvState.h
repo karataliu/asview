@@ -7,6 +7,7 @@
 #include "AsvUri.h"
 #include "AsvEntry.h"
 #include "AsvScheme.h"
+#include "AsvLoader.h"
 using namespace std;
 
 class AsvState
@@ -15,10 +16,13 @@ public:
     AsvState(string uri);
     string Uri;
     unique_ptr<AsvUri> BoundUri;
-    const AsvScheme* Scheme;
 	vector<shared_ptr<AsvEntry>> Data;
-
     void Load();
     AsvState* Load1(size_t index) const;
+
+    static AsvState* Create(const string& uri, const AsvLoader* loader);
+
+private:
+    const AsvScheme* Scheme;
 };
 
