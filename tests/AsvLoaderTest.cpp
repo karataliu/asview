@@ -77,8 +77,8 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
     //loader->Load(s1.get());
     // auto s1 = loader->CreateState("calc2://29");
     auto s1 = CreateState("calc2://29", loader.get());
+    s1->Load();
 
-    loader->Load(s1);
     REQUIRE (s1->Uri == "calc2://29");
     auto data = s1->Data;
     REQUIRE (data.size() == 2);
@@ -89,8 +89,8 @@ TEST_CASE( "AsvLoader Load", "[AsvLoader]" ) {
     //loader->Load(s2.get());
     // auto s2 = loader->CreateState("calc2://39");
     auto s2 = CreateState("calc2://39", loader.get());
+    s2->Load();
 
-    loader->Load(s2);
     REQUIRE (s2->Uri == "calc2://39");
     data = s2->Data;
     REQUIRE (data.size() == 3);
@@ -109,8 +109,8 @@ TEST_CASE( "AsvLoader Load with jump", "[AsvLoader]" ) {
     // loader->Load(s1.get());
     //auto s1 = loader->CreateState("calc2://49");
     auto s1 = CreateState("calc2://49", &loader);
+    s1->Load();
 
-    loader.Load(s1);
     REQUIRE (s1->Uri == "calc2://49");
 
     auto s2 = s1->Load1(1);

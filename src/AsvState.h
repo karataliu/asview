@@ -18,6 +18,7 @@ public:
     const AsvScheme* Scheme;
 	vector<shared_ptr<AsvEntry>> Data;
 
+    void Load();
     AsvState* Load1(size_t index) const;
 };
 

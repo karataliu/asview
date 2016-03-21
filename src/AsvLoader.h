@@ -11,8 +11,6 @@ using namespace std;
 class AsvLoader
 {
 public:
-    void Load(AsvState* state) const;
-
     AsvScheme* GetProtocol(string name) const;
     void AddProtocol(AsvScheme* protocol);
 private:

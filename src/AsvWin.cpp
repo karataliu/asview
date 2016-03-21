@@ -57,7 +57,7 @@ void AsvWin::Start(string uri)
     // this->loader->Load(state.get());
     //auto state = this->loader->CreateState(uri);
     auto state = CreateState(uri, this->loader);
-    this->loader->Load(state);
+    state->Load();
     chain.Add(shared_ptr<AsvState>(state));
     Refresh();
     this->MainLoop();
@@ -120,7 +120,7 @@ void AsvWin::MainLoop()
                 break;
             case 13: // ENTER
                 sn = chain.Current()->Load1(item_index(current_item(menu)));
-                loader->Load(sn);
+                sn->Load();
                 chain.Add(shared_ptr<AsvState>(sn));
                 Refresh();
                 break;
