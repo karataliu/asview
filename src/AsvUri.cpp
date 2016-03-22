@@ -1,10 +1,10 @@
 #include "AsvUri.h"
 
-unique_ptr<AsvUri> AsvUri::Create(string uri)
+std::unique_ptr<AsvUri> AsvUri::Create(std::string uri)
 {
-    unique_ptr<AsvUri> asvUri(new AsvUri);
+    std::unique_ptr<AsvUri> asvUri(new AsvUri);
 	auto index = uri.find("://");
-    if (index == string::npos || index == 0){
+    if (index == std::string::npos || index == 0){
 		return NULL;
 	}
 	

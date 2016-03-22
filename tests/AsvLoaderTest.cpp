@@ -2,6 +2,7 @@
 #include <memory>
 #include "AsvLoader.h"
 #include "AsvState.h"
+using namespace std;
 
 template <typename T>
 class Singleton

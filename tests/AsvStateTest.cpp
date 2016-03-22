@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "AsvState.h"
-
+using namespace std;
 
 template <typename T>
 class Singleton
@@ -87,7 +87,6 @@ TEST_CASE( "Create State", "[AsvState]" ) {
     loader->AddProtocol(Singleton<Calc2Protocol>::Instance());
 
     auto s1 = AsvState::Create("calc2://29", loader.get());
-    s1->Load();
 
     REQUIRE (s1->Uri == "calc2://29");
     auto data = s1->Data;
@@ -96,7 +95,6 @@ TEST_CASE( "Create State", "[AsvState]" ) {
     REQUIRE (data[1]->id == "2");
 
     auto s2 = AsvState::Create("calc2://39", loader.get());
-    s2->Load();
 
     REQUIRE (s2->Uri == "calc2://39");
     data = s2->Data;
@@ -111,7 +109,6 @@ TEST_CASE( "AsvState Load 1 and 2.", "[AsvState]" ) {
     AsvLoader loader;
     loader.AddProtocol(Singleton<Calc2Protocol>::Instance());
     auto s1 = AsvState::Create("calc2://49", &loader);
-    s1->Load();
     REQUIRE (s1->Uri == "calc2://49");
 
     auto s2 = s1->Load1(1);

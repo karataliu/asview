@@ -21,7 +21,7 @@ void AsvChain::Add(AsvState* state)
         while(itr!=list.end()) itr = list.erase(itr);
     }
 
-    list.push_back(unique_ptr<AsvState>(state));
+    list.push_back(std::unique_ptr<AsvState>(state));
 	++index;
 }
 

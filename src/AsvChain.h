@@ -1,8 +1,8 @@
 #pragma once
+
 #include <vector>
 #include <memory>
 #include "AsvState.h"
-using namespace std;
 
 class AsvChain
 {
@@ -12,6 +12,6 @@ public:
     AsvState* Current();
     void Add(AsvState* state);
 private:
-    size_t index {};
-    vector<unique_ptr<AsvState>> list;
+    std::size_t index {};
+    std::vector<std::unique_ptr<AsvState>> list;
 };

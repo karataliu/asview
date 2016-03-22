@@ -1,6 +1,7 @@
 #include "AsvState.h"
 #include "AsvUri.h"
 #include "AsvLoaderFactory.h"
+using namespace std;
 
 AsvState::AsvState(string uri) : Uri(uri)
 {
@@ -9,7 +10,6 @@ AsvState::AsvState(string uri) : Uri(uri)
     this->BoundUri = std::move(asvUri);
     this->Scheme = NULL;
 }
-
 
 void AsvState::Load()
 {
@@ -27,7 +27,7 @@ void AsvState::Load()
     }
 }
 
-unique_ptr<AsvState> AsvState::Load1(size_t index) const
+unique_ptr<AsvState> AsvState::Load1(std::size_t index) const
 {
     if (index >= this->Data.size()){
         throw "invalid index";
@@ -44,6 +44,8 @@ unique_ptr<AsvState> AsvState::Load1(size_t index) const
 
     unique_ptr<AsvState> s2 = unique_ptr<AsvState>(new AsvState(newuri));
     s2->Scheme = this->Scheme;
+
+    s2->Load();
     return s2;
 }
 
@@ -55,5 +57,6 @@ unique_ptr<AsvState> AsvState::Create(const string& uri, const AsvLoader* loader
         throw string("scheme null");
     state->Scheme = scheme;
 
+    state->Load();
     return state;
 }

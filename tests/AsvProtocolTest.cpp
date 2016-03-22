@@ -1,8 +1,9 @@
-#include "catch.hpp"
 #include <memory>
 #include <iostream>
 #include <stdexcept>
-#include "AsvLoader.h"
+#include "catch.hpp"
+#include "AsvScheme.h"
+using namespace std;
 
 class CalcProtocol : public AsvScheme
 {

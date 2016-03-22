@@ -6,7 +6,7 @@ int init = 0;
 
 AsvLoader* GetLoader()
 {
-    static unique_ptr<AsvLoader> loader(new AsvLoader());
+    static std::unique_ptr<AsvLoader> loader(new AsvLoader());
     if(init==0){
         loader->AddProtocol(new AsvCalc());
         loader->AddProtocol(new AsvFile());

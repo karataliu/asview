@@ -10,7 +10,7 @@ class AsvWin
 public:
     AsvWin(const AsvLoader *);
     ~AsvWin();
-    void Start(string uri);
+    void Start(std::string uri);
 private:
     void Refresh();
     void Update(const AsvState* state);

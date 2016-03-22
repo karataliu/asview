@@ -2,14 +2,13 @@
 
 #include <list>
 #include "AsvScheme.h"
-using namespace std;
 
 class AsvLoader
 {
 public:
-    AsvScheme* GetProtocol(string name) const;
+    AsvScheme* GetProtocol(std::string name) const;
     void AddProtocol(AsvScheme* protocol);
 private:
-    list<AsvScheme*> protocolList;
+    std::list<AsvScheme*> protocolList;
 };
 

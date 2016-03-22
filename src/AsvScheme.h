@@ -3,15 +3,14 @@
 #include <vector>
 #include <memory>
 #include "AsvEntry.h"
-using namespace std;
 
 class AsvScheme
 {
 public:
-    AsvScheme(string scheme);
-    bool CanHandle(string name);
-    virtual vector<shared_ptr<AsvEntry>> Load(string path) const;
-    virtual string Jump(string path, string id) const;
+    AsvScheme(std::string scheme);
+    bool CanHandle(std::string name);
+    virtual std::vector<std::shared_ptr<AsvEntry>> Load(std::string path) const;
+    virtual std::string Jump(std::string path, std::string id) const;
 private:
-    string scheme;
+    std::string scheme;
 };

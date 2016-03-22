@@ -37,15 +37,15 @@ void AsvWin::freeMenu()
     if(menu){
         unpost_menu(menu);
         free_menu(menu);
+        menu = NULL;
         for(auto i = 0; i < itemsCount; ++i)free_item(items[i]);
+        free(items);
     }
 }
 
-void AsvWin::Start(string uri)
+void AsvWin::Start(std::string uri)
 {
-    auto state = AsvState::Create(uri, this->loader);
-    state->Load();
-    chain.Add(state.release());
+    chain.Add(AsvState::Create(uri, this->loader).release());
     Refresh();
     this->MainLoop();
 }
@@ -79,7 +79,6 @@ void AsvWin::Update(const AsvState *state)
 
 void AsvWin::MainLoop()
 {
-    unique_ptr<AsvState> sn;
     int c;
     while((c = wgetch(win)) != KEY_F(11))
     {
@@ -92,11 +91,11 @@ void AsvWin::MainLoop()
                 menu_driver(menu, REQ_UP_ITEM);
                 break;
             case KEY_NPAGE:
-                    menu_driver(menu, REQ_SCR_DPAGE);
-                    break;
+                menu_driver(menu, REQ_SCR_DPAGE);
+                break;
             case KEY_PPAGE:
-                    menu_driver(menu, REQ_SCR_UPAGE);
-                    break;
+                menu_driver(menu, REQ_SCR_UPAGE);
+                break;
             case KEY_LEFT:
                 chain.Prev();
                 Refresh();
@@ -106,12 +105,11 @@ void AsvWin::MainLoop()
                 Refresh();
                 break;
             case 13: // ENTER
-                sn = chain.Current()->Load1(item_index(current_item(menu)));
-                sn->Load();
-                chain.Add(sn.release());
+                chain.Add(chain.Current()->Load1(item_index(current_item(menu))).release());
                 Refresh();
                 break;
         }
+
         wrefresh(win);
     }
 }

@@ -1,6 +1,7 @@
-#include "catch.hpp"
 #include <memory>
+#include "catch.hpp"
 #include "AsvUri.h"
+using namespace std;
 
 TEST_CASE( "AsvUri works", "[AsvUri]" ) {
 	auto a = AsvUri::Create("calc1://a+b");

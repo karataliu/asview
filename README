@@ -1,9 +1,13 @@
 A viewer for various URI schemes.
 
 
-       / AsvUri X
+       / AsvUri 
 AsvWin - AsvChain
        \ AsvState - AsvLoader - AsvScheme
+
+
+AsvEntry -> AsvScheme -> AsvLoader -> AsvState -> AsvChain -> AsvWin
+AsvUri /
 
 
 

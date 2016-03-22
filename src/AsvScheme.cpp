@@ -1,4 +1,5 @@
 #include "AsvScheme.h"
+using namespace std;
 
 AsvScheme::AsvScheme(string scheme) : scheme(scheme) {}
 
