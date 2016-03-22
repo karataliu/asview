@@ -52,7 +52,7 @@ unique_ptr<AsvState> AsvState::Load1(std::size_t index) const
 unique_ptr<AsvState> AsvState::Create(const string& uri, const AsvLoader* loader)
 {
     auto state = unique_ptr<AsvState>(new AsvState(uri));
-    auto scheme = loader->GetProtocol(state->BoundUri->Scheme);
+    auto scheme = loader->GetScheme(state->BoundUri->Scheme);
     if (scheme == NULL)
         throw string("scheme null");
     state->Scheme = scheme;

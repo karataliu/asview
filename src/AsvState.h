@@ -16,8 +16,8 @@ public:
     std::string Uri;
     std::unique_ptr<AsvUri> BoundUri;
     std::vector<std::shared_ptr<AsvEntry>> Data;
-    std::unique_ptr<AsvState> Load1(std::size_t index) const;
 
+    std::unique_ptr<AsvState> Load1(std::size_t index) const;
     static std::unique_ptr<AsvState> Create(const std::string& uri, const AsvLoader* loader);
 
 private:

@@ -8,8 +8,8 @@ AsvLoader* GetLoader()
 {
     static std::unique_ptr<AsvLoader> loader(new AsvLoader());
     if(init==0){
-        loader->AddProtocol(new AsvCalc());
-        loader->AddProtocol(new AsvFile());
+        loader->AddScheme(new AsvCalc());
+        loader->AddScheme(new AsvFile());
         init=1;
     }
 

@@ -6,8 +6,8 @@
 class AsvLoader
 {
 public:
-    AsvScheme* GetProtocol(std::string name) const;
-    void AddProtocol(AsvScheme* protocol);
+    AsvScheme* GetScheme(std::string schemeName) const;
+    void AddScheme(AsvScheme* scheme);
 private:
     std::list<AsvScheme*> protocolList;
 };

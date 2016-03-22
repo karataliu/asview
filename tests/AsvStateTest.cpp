@@ -84,7 +84,7 @@ TEST_CASE( "AsvState with invalid input", "[AsvState]" ) {
 
 TEST_CASE( "Create State", "[AsvState]" ) {
     auto loader = make_shared<AsvLoader>();
-    loader->AddProtocol(Singleton<Calc2Protocol>::Instance());
+    loader->AddScheme(Singleton<Calc2Protocol>::Instance());
 
     auto s1 = AsvState::Create("calc2://29", loader.get());
 
@@ -107,7 +107,7 @@ TEST_CASE( "Create State", "[AsvState]" ) {
 
 TEST_CASE( "AsvState Load 1 and 2.", "[AsvState]" ) {
     AsvLoader loader;
-    loader.AddProtocol(Singleton<Calc2Protocol>::Instance());
+    loader.AddScheme(Singleton<Calc2Protocol>::Instance());
     auto s1 = AsvState::Create("calc2://49", &loader);
     REQUIRE (s1->Uri == "calc2://49");
 
