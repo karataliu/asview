@@ -12,9 +12,6 @@ public:
     ~AsvWin();
     void Start(string uri);
 private:
-    shared_ptr<AsvState> s1;
-    shared_ptr<AsvState> s2;
-
     void Refresh();
     void Update(const AsvState* state);
     void MainLoop();

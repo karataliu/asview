@@ -7,12 +7,11 @@ using namespace std;
 class AsvChain
 {
 public:
-    AsvChain();
 	int Prev();
     int Next();
     AsvState* Current();
-	void Add(shared_ptr<AsvState> state); 
+    void Add(AsvState* state);
 private:
-    size_t index;
-	vector<shared_ptr<AsvState>> list;
+    size_t index {};
+    vector<unique_ptr<AsvState>> list;
 };

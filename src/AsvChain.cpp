@@ -1,7 +1,5 @@
 #include "AsvChain.h"
 
-AsvChain::AsvChain() : index(0) {}
-
 int AsvChain::Prev()
 {
     if (index > 1) return --index;
@@ -14,7 +12,7 @@ int AsvChain::Next()
     return -1;
 }
 
-void AsvChain::Add(shared_ptr<AsvState> state)
+void AsvChain::Add(AsvState* state)
 {
     if (index < list.size()){
         auto itr = list.begin();
@@ -23,7 +21,7 @@ void AsvChain::Add(shared_ptr<AsvState> state)
         while(itr!=list.end()) itr = list.erase(itr);
     }
 
-	list.push_back(state);
+    list.push_back(unique_ptr<AsvState>(state));
 	++index;
 }
 

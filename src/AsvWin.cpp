@@ -24,15 +24,6 @@ AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
     refresh();
     wrefresh(win);
     menu = NULL;
-
-    // For testing:
-    s1 = make_shared<AsvState>("s1");
-    s1->Data.push_back(make_shared<AsvEntry>("1a"));
-    s1->Data.push_back(make_shared<AsvEntry>("1b"));
-
-    s2 = make_shared<AsvState>("s2");
-    s2->Data.push_back(make_shared<AsvEntry>("2a"));
-    s2->Data.push_back(make_shared<AsvEntry>("2b"));
 }
 
 AsvWin::~AsvWin()
@@ -52,9 +43,9 @@ void AsvWin::freeMenu()
 
 void AsvWin::Start(string uri)
 {
-    shared_ptr<AsvState> state {AsvState::Create(uri, this->loader)};
+    auto state = AsvState::Create(uri, this->loader);
     state->Load();
-    chain.Add(state);
+    chain.Add(state.release());
     Refresh();
     this->MainLoop();
 }
@@ -88,7 +79,7 @@ void AsvWin::Update(const AsvState *state)
 
 void AsvWin::MainLoop()
 {
-    shared_ptr<AsvState> sn;
+    unique_ptr<AsvState> sn;
     int c;
     while((c = wgetch(win)) != KEY_F(11))
     {
@@ -115,17 +106,9 @@ void AsvWin::MainLoop()
                 Refresh();
                 break;
             case 13: // ENTER
-                sn.reset(chain.Current()->Load1(item_index(current_item(menu))).release());
+                sn = chain.Current()->Load1(item_index(current_item(menu)));
                 sn->Load();
-                chain.Add(sn);
-                Refresh();
-                break;
-            case '1':
-                chain.Add(s1);
-                Refresh();
-                break;
-            case '2':
-                chain.Add(s2);
+                chain.Add(sn.release());
                 Refresh();
                 break;
         }
