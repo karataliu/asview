@@ -12,14 +12,18 @@ public:
     ~AsvWin();
     void Start(std::string uri);
 private:
-    void Refresh();
-    void Update(const AsvState* state);
-    void MainLoop();
-    void freeMenu();
+    static const char* clean;
+
     AsvChain chain;
     const AsvLoader* loader;
     int itemsCount;
     WINDOW *win;
     MENU *menu;
     ITEM **items;
+
+    void Refresh();
+    void Update(const AsvState* state);
+    void MainLoop();
+    void freeMenu();
+    void Hint(const char* message);
 };

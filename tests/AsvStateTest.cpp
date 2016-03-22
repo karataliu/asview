@@ -73,12 +73,7 @@ TEST_CASE( "AsvState works", "[AsvState]" ) {
 
 
 TEST_CASE( "AsvState with invalid input", "[AsvState]" ) {
-    unique_ptr<AsvUri> null;
-    AsvState state("bz");
-
-    REQUIRE(state.Uri == "bz" );
-    REQUIRE(state.Data.size() == 0 );
-    REQUIRE(state.BoundUri == null);
+    REQUIRE_THROWS(new AsvState("bz"));
 }
 
 

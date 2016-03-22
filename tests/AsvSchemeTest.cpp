@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include "catch.hpp"
 #include "AsvScheme.h"
+#include "AsvException.h"
 using namespace std;
 
 class CalcScheme : public AsvScheme
@@ -16,7 +17,7 @@ public:
 		try{
 			val = stoi(path);
         }catch (const std::invalid_argument& ia){
-			return data;
+            throw AsvException("Data load error.");
 		}
 		
 		data.push_back(make_shared<AsvEntry>(to_string(val+1)));
@@ -35,8 +36,7 @@ TEST_CASE("AsvScheme works", "[AsvScheme]" ) {
 
 TEST_CASE("AsvScheme for invalid path", "[AsvScheme]" ) {
     CalcScheme calc2;
-	auto data = calc2.Load("a");
-	REQUIRE(data.size() == 0);
+    REQUIRE_THROWS_AS(calc2.Load("a"), AsvException);
 }
 
 

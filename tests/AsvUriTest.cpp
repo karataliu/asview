@@ -1,6 +1,7 @@
 #include <memory>
 #include "catch.hpp"
 #include "AsvUri.h"
+#include "AsvException.h"
 using namespace std;
 
 TEST_CASE( "AsvUri works", "[AsvUri]" ) {
@@ -22,8 +23,8 @@ TEST_CASE( "AsvUri works", "[AsvUri]" ) {
 }
 
 TEST_CASE( "AsvUri parse from invalid string should fail", "[AsvUri]" ) {
-    unique_ptr<AsvUri> null = NULL;
-    REQUIRE (AsvUri::Create("calc2:/3+5") == null);
-    REQUIRE (AsvUri::Create("://b") == null);
-    REQUIRE (AsvUri::Create("://") == null);
+
+    REQUIRE_THROWS_AS (AsvUri::Create("calc2:/3+5"), AsvException);
+    REQUIRE_THROWS (AsvUri::Create("://b") == nullptr);
+    REQUIRE_THROWS (AsvUri::Create("://") == nullptr);
 }

@@ -1,6 +1,4 @@
 #include "AsvState.h"
-#include "AsvUri.h"
-#include "AsvLoaderFactory.h"
 using namespace std;
 
 AsvState::AsvState(string uri) : Uri(uri)

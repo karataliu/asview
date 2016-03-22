@@ -4,6 +4,9 @@
 #include "AsvState.h"
 #include "AsvChain.h"
 #include "AsvWin.h"
+#include "AsvException.h"
+
+const char* AsvWin::clean = "                  ";
 
 AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
 {
@@ -20,7 +23,7 @@ AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
     box(win, 0, 0);
     mvwprintw(win, 1, 1, "%s", "My menu1");
     mvwhline(win, 2, 1, ACS_HLINE, 38);
-    mvprintw(LINES - 1, 0, "F11 to exit");
+    this->Hint("F11 to exit.");
     refresh();
     wrefresh(win);
     menu = NULL;
@@ -31,6 +34,12 @@ AsvWin::~AsvWin()
     freeMenu();
     delwin(win);
     endwin();
+}
+
+void AsvWin::Hint(const char* message)
+{
+    mvprintw(LINES - 1, 0, message);
+    refresh();
 }
 
 void AsvWin::freeMenu()
@@ -53,6 +62,7 @@ void AsvWin::Start(std::string uri)
 
 void AsvWin::Refresh()
 {
+    this->Hint(clean);
     Update(chain.Current());
 }
 
@@ -106,12 +116,15 @@ void AsvWin::MainLoop()
                 Refresh();
                 break;
             case 13: // ENTER
-                chain.Add(chain.Current()->Load1(item_index(current_item(menu))).release());
-                Refresh();
+                try{
+                    chain.Add(chain.Current()->Load1(item_index(current_item(menu))).release());
+                    Refresh();
+                } catch(AsvException& exc){
+                    this->Hint(exc.what());
+                }
                 break;
         }
 
         wrefresh(win);
     }
 }
-
