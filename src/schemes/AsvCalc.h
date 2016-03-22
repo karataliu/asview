@@ -1,5 +1,5 @@
-//#pragma once
-#include "../AsvState.h"
+#pragma once
+
 #include "../AsvScheme.h"
 
 class AsvCalc : public AsvScheme

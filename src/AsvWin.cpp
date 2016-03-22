@@ -29,6 +29,7 @@ AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
 AsvWin::~AsvWin()
 {
     freeMenu();
+    delwin(win);
     endwin();
 }
 
