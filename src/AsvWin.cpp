@@ -52,9 +52,9 @@ void AsvWin::freeMenu()
 
 void AsvWin::Start(string uri)
 {
-    auto state = AsvState::Create(uri, this->loader);
+    shared_ptr<AsvState> state {AsvState::Create(uri, this->loader)};
     state->Load();
-    chain.Add(shared_ptr<AsvState>(state));
+    chain.Add(state);
     Refresh();
     this->MainLoop();
 }
@@ -88,7 +88,7 @@ void AsvWin::Update(const AsvState *state)
 
 void AsvWin::MainLoop()
 {
-    AsvState* sn;
+    shared_ptr<AsvState> sn;
     int c;
     while((c = wgetch(win)) != KEY_F(11))
     {
@@ -115,9 +115,9 @@ void AsvWin::MainLoop()
                 Refresh();
                 break;
             case 13: // ENTER
-                sn = chain.Current()->Load1(item_index(current_item(menu)));
+                sn.reset(chain.Current()->Load1(item_index(current_item(menu))).release());
                 sn->Load();
-                chain.Add(shared_ptr<AsvState>(sn));
+                chain.Add(sn);
                 Refresh();
                 break;
             case '1':

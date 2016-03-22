@@ -18,9 +18,9 @@ public:
     unique_ptr<AsvUri> BoundUri;
 	vector<shared_ptr<AsvEntry>> Data;
     void Load();
-    AsvState* Load1(size_t index) const;
+    unique_ptr<AsvState> Load1(size_t index) const;
 
-    static AsvState* Create(const string& uri, const AsvLoader* loader);
+    static unique_ptr<AsvState> Create(const string& uri, const AsvLoader* loader);
 
 private:
     const AsvScheme* Scheme;
