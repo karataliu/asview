@@ -1,7 +1,7 @@
 #include "AsvManager.h"
 #include "AsvException.h"
 
-AsvManager::AsvManager(std::unique_ptr<AsvLoader> loader) : loader(std::move(loader)) {}
+AsvManager::AsvManager(std::unique_ptr<AsvLoader> loader) : loader(std::move(loader)), updated(false) {}
 
 void AsvManager::PushState(std::string uri)
 {
@@ -10,6 +10,7 @@ void AsvManager::PushState(std::string uri)
     }catch(const AsvException& exc){
         this->message = std::string(exc.what());
     }
+    this->updated = true;
 }
 
 const AsvState* AsvManager::Current()
@@ -29,6 +30,8 @@ void AsvManager::Enter()
     } catch(AsvException& exc){
         this->message = std::string(exc.what());
     }
+
+    this->updated = true;
 }
 
 void AsvManager::Prev()
@@ -38,6 +41,8 @@ void AsvManager::Prev()
     } catch(AsvException& exc){
         this->message = std::string(exc.what());
     }
+
+    this->updated = true;
 }
 
 void AsvManager::Next()
@@ -47,4 +52,13 @@ void AsvManager::Next()
     } catch(AsvException& exc){
         this->message = std::string(exc.what());
     }
+
+    this->updated = true;
+}
+
+bool AsvManager::CheckUpdate()
+{
+    bool ret = this->updated;
+    this->updated = false;
+    return ret;
 }

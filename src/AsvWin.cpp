@@ -21,7 +21,7 @@ AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager)
     box(win, 0, 0);
     mvwprintw(win, 1, 1, "%s", "My menu1");
     mvwhline(win, 2, 1, ACS_HLINE, 38);
-    this->Hint("F11 to exit.");
+    this->hint("F11 to exit.");
     refresh();
     wrefresh(win);
     menu = NULL;
@@ -32,14 +32,6 @@ AsvWin::~AsvWin()
     freeMenu();
     delwin(win);
     endwin();
-}
-
-void AsvWin::Hint(const char* message)
-{
-    attron(COLOR_PAIR(1));
-    mvprintw(LINES - 1, 0, message);
-    attroff(COLOR_PAIR(1));
-    refresh();
 }
 
 void AsvWin::freeMenu()
@@ -53,21 +45,31 @@ void AsvWin::freeMenu()
     }
 }
 
+void AsvWin::hint(const char* message)
+{
+    attron(COLOR_PAIR(1));
+    mvprintw(LINES - 1, 0, message);
+    attroff(COLOR_PAIR(1));
+    refresh();
+}
+
 void AsvWin::Start(std::string uri)
 {
     this->manager->PushState(uri);
-    Refresh();
-    this->MainLoop();
+    this->mainLoop();
 }
 
-void AsvWin::Refresh()
+void AsvWin::refreshWin()
 {
-    this->Hint(clean);
-    this->Hint(this->manager->Message().c_str());
-    Update();
+    if(this->manager->CheckUpdate()){
+        this->hint(clean);
+        this->hint(this->manager->Message().c_str());
+        update();
+        wrefresh(win);
+    }
 }
 
-void AsvWin::Update()
+void AsvWin::update()
 {
     const AsvState *state = this->manager->Current();
 
@@ -91,9 +93,11 @@ void AsvWin::Update()
     post_menu(menu);
 }
 
-void AsvWin::MainLoop()
+void AsvWin::mainLoop()
 {
     int c;
+
+    this->refreshWin();
     while((c = wgetch(win)) != KEY_F(11))
     {
         switch(c)
@@ -111,24 +115,21 @@ void AsvWin::MainLoop()
                 menu_driver(menu, REQ_SCR_UPAGE);
                 break;
             case KEY_LEFT:
-                manager->Prev();
-                Refresh();
+                this->manager->Prev();
                 break;
             case KEY_RIGHT:
-                manager->Next();
-                Refresh();
+                this->manager->Next();
                 break;
             case 13: // ENTER
                 this->manager->Index = item_index(current_item(menu));
                 this->manager->Enter();
-                Refresh();
                 break;
             default:
                 std::string a("unknown key" + std::to_string(c));
-                this->Hint(a.c_str());
+                this->hint(a.c_str());
                 break;
         }
 
-        wrefresh(win);
+        this->refreshWin();
     }
 }

@@ -18,9 +18,9 @@ private:
     MENU *menu;
     ITEM **items;
 
-    void Refresh();
-    void Update();
-    void MainLoop();
+    void refreshWin();
+    void update();
+    void mainLoop();
     void freeMenu();
-    void Hint(const char* message);
+    void hint(const char* message);
 };

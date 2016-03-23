@@ -10,14 +10,13 @@ public:
     void Enter();
     void Prev();
     void Next();
-
     const std::string& Message() const;
-
-    std::unique_ptr<AsvLoader> loader;
-
+    bool CheckUpdate();
     int Index;
 
 private:
     std::string message {};
     AsvChain chain;
+    std::unique_ptr<AsvLoader> loader;
+    bool updated;
 };
