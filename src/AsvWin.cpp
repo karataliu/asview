@@ -6,12 +6,15 @@
 #include "AsvWin.h"
 #include "AsvException.h"
 
-const char* AsvWin::clean = "                  ";
-
+const char* AsvWin::clean = "                                               ";
 AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
 {
     initscr();
-    //start_color();
+
+    start_color();
+    //init_pair(1, COLOR_BLUE, COLOR_WHITE);
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+
     raw();
     //cbreak();
     nonl();
@@ -38,7 +41,9 @@ AsvWin::~AsvWin()
 
 void AsvWin::Hint(const char* message)
 {
+    attron(COLOR_PAIR(1));
     mvprintw(LINES - 1, 0, message);
+    attroff(COLOR_PAIR(1));
     refresh();
 }
 

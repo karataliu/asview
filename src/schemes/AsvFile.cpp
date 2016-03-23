@@ -25,7 +25,7 @@ vector<shared_ptr<AsvEntry>> AsvFile::Load(string path) const
         }
         closedir(dir);
     } else {
-        throw AsvException("Data Load error.");
+        throw AsvException("Dir read error:" + path);
     }
 
     return x;
