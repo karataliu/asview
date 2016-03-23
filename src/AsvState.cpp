@@ -1,4 +1,5 @@
 #include "AsvState.h"
+#include "AsvException.h"
 using namespace std;
 
 AsvState::AsvState(string uri) : Uri(uri)
@@ -51,7 +52,7 @@ unique_ptr<AsvState> AsvState::Create(const string& uri, const AsvLoader* loader
     auto state = unique_ptr<AsvState>(new AsvState(uri));
     auto scheme = loader->GetScheme(state->BoundUri->Scheme);
     if (scheme == NULL)
-        throw string("scheme null");
+        throw AsvException("scheme null");
     state->Scheme = scheme;
 
     state->Load();

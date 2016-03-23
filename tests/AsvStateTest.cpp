@@ -1,6 +1,18 @@
 #include "catch.hpp"
 #include "AsvState.h"
+#include "AsvException.h"
 using namespace std;
+
+class Calc3Protocol : public AsvScheme
+{
+public:
+    Calc3Protocol() : AsvScheme("calc3") {}
+    vector<shared_ptr<AsvEntry>> Load(string path) const
+    {
+        throw AsvException("Test data loading error.");
+    }
+};
+
 
 class Calc2Protocol : public AsvScheme
 {
@@ -83,3 +95,15 @@ TEST_CASE( "AsvState Load 1 and 2.", "[AsvState]" ) {
     auto s2 = s1->Load1(1);
     REQUIRE (s2->Uri == "calc2://49+2");
 }
+
+TEST_CASE( "AsvState invalid.", "[AsvState]" ) {
+    AsvLoader loader;
+    loader.AddScheme(unique_ptr<AsvScheme>(new Calc2Protocol));
+    loader.AddScheme(unique_ptr<AsvScheme>(new Calc3Protocol));
+    REQUIRE_THROWS_WITH(AsvState::Create("calc1://49", &loader), "scheme null");
+    REQUIRE_THROWS_WITH(AsvState::Create("://49", &loader), "Malformat Uri.");
+    REQUIRE_THROWS_WITH(AsvState::Create("calc3://49", &loader), "Test data loading error.");
+}
+
+
+

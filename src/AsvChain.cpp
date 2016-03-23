@@ -1,15 +1,16 @@
 #include "AsvChain.h"
+#include "AsvException.h"
 
-int AsvChain::Prev()
+void AsvChain::Prev()
 {
-    if (index > 1) return --index;
-	return -1;		
+    if (index <= 1) throw AsvException("First state reached.");
+    --index;
 }
 
-int AsvChain::Next()
+void AsvChain::Next()
 {
-    if (index < list.size()) return ++index;
-    return -1;
+    if (index >= list.size()) throw AsvException("Last state reached.");
+    ++index;
 }
 
 void AsvChain::Add(AsvState* state)
@@ -27,5 +28,6 @@ void AsvChain::Add(AsvState* state)
 
 AsvState* AsvChain::Current()
 {
+    if(index - 1 >= list.size()) return NULL;
     return list[index-1].get();
 }

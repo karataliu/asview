@@ -22,10 +22,31 @@ TEST_CASE( "AsvChain works", "[AsvChain]" ) {
     chain.Add(state2);
     REQUIRE(chain.Current() == state2);
 	
-	int prev = chain.Prev();
-    REQUIRE(prev == 1);
+    chain.Prev();
     REQUIRE(chain.Current() == state1);
 
     chain.Add(state3);
     REQUIRE(chain.Current() == state3);
+}
+
+
+TEST_CASE( "AsvChain invalid move", "[AsvChain]" ) {
+    auto state1 = new AsvState("calc://1");
+    auto state2 = new AsvState("calc://2");
+
+    AsvChain chain;
+    REQUIRE(chain.Current() == nullptr);
+
+    chain.Add(state1);
+    REQUIRE(chain.Current() == state1);
+
+    chain.Add(state2);
+    REQUIRE_THROWS_WITH(chain.Next(), "Last state reached.");
+    REQUIRE(chain.Current() == state2);
+
+    REQUIRE_NOTHROW(chain.Prev());
+    REQUIRE(chain.Current() == state1);
+
+    REQUIRE_THROWS_WITH(chain.Prev(), "First state reached.");
+    REQUIRE(chain.Current() == state1);
 }

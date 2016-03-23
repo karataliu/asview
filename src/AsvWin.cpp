@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "AsvState.h"
-#include "AsvChain.h"
 #include "AsvWin.h"
 #include "AsvException.h"
 
@@ -56,7 +55,7 @@ void AsvWin::freeMenu()
 
 void AsvWin::Start(std::string uri)
 {
-    manager->chain.Add(AsvState::Create(uri, manager->loader.get()).release());
+    this->manager->PushState(uri);
     Refresh();
     this->MainLoop();
 }
@@ -64,11 +63,14 @@ void AsvWin::Start(std::string uri)
 void AsvWin::Refresh()
 {
     this->Hint(clean);
-    Update(manager->chain.Current());
+    this->Hint(this->manager->Message().c_str());
+    Update();
 }
 
-void AsvWin::Update(const AsvState *state)
+void AsvWin::Update()
 {
+    const AsvState *state = this->manager->Current();
+
     if(!state) return;
 
     wmove(win, 1, 1);
@@ -109,20 +111,17 @@ void AsvWin::MainLoop()
                 menu_driver(menu, REQ_SCR_UPAGE);
                 break;
             case KEY_LEFT:
-                manager->chain.Prev();
+                manager->Prev();
                 Refresh();
                 break;
             case KEY_RIGHT:
-                manager->chain.Next();
+                manager->Next();
                 Refresh();
                 break;
             case 13: // ENTER
-                try{
-                    manager->chain.Add(manager->chain.Current()->Load1(item_index(current_item(menu))).release());
-                    Refresh();
-                } catch(AsvException& exc){
-                    this->Hint(exc.what());
-                }
+                this->manager->Index = item_index(current_item(menu));
+                this->manager->Enter();
+                Refresh();
                 break;
             default:
                 std::string a("unknown key" + std::to_string(c));

@@ -7,8 +7,8 @@
 class AsvChain
 {
 public:
-	int Prev();
-    int Next();
+    void Prev();
+    void Next();
     AsvState* Current();
     void Add(AsvState* state);
 private:
