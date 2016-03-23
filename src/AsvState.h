@@ -22,6 +22,6 @@ public:
 
 private:
     void Load();
-    const AsvScheme* Scheme;
+    std::shared_ptr<AsvScheme> Scheme;
 };
 

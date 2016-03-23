@@ -7,9 +7,11 @@ int init = 0;
 AsvLoader* GetLoader()
 {
     static std::unique_ptr<AsvLoader> loader(new AsvLoader());
+
+
     if(init==0){
-        loader->AddScheme(new AsvCalc());
-        loader->AddScheme(new AsvFile());
+        loader->AddScheme(std::unique_ptr<AsvCalc>(new AsvCalc()));
+        loader->AddScheme(std::unique_ptr<AsvFile>(new AsvFile()));
         init=1;
     }
 

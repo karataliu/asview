@@ -2,32 +2,6 @@
 #include "AsvState.h"
 using namespace std;
 
-template <typename T>
-class Singleton
-{
-    Singleton(){};
-    Singleton(const Singleton&) = delete;
-    Singleton& operator=(const Singleton&) = delete;
-public:
-    static T* Instance()
-    {
-        static T instance;
-        return &instance;
-    }
-};
-
-
-class Calc1Protocol : public AsvScheme
-{
-public:
-    Calc1Protocol() : AsvScheme("calc1") {}
-        vector<shared_ptr<AsvEntry>> Load(string path) const
-    {
-        vector<shared_ptr<AsvEntry>> data;
-        return data;
-    }
-};
-
 class Calc2Protocol : public AsvScheme
 {
 public:
@@ -79,7 +53,7 @@ TEST_CASE( "AsvState with invalid input", "[AsvState]" ) {
 
 TEST_CASE( "Create State", "[AsvState]" ) {
     auto loader = make_shared<AsvLoader>();
-    loader->AddScheme(Singleton<Calc2Protocol>::Instance());
+    loader->AddScheme(unique_ptr<AsvScheme>(new Calc2Protocol));
 
     auto s1 = AsvState::Create("calc2://29", loader.get());
 
@@ -102,7 +76,7 @@ TEST_CASE( "Create State", "[AsvState]" ) {
 
 TEST_CASE( "AsvState Load 1 and 2.", "[AsvState]" ) {
     AsvLoader loader;
-    loader.AddScheme(Singleton<Calc2Protocol>::Instance());
+    loader.AddScheme(unique_ptr<AsvScheme>(new Calc2Protocol));
     auto s1 = AsvState::Create("calc2://49", &loader);
     REQUIRE (s1->Uri == "calc2://49");
 

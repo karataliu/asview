@@ -1,14 +1,15 @@
 #pragma once
 
 #include <list>
+#include <memory>
 #include "AsvScheme.h"
 
 class AsvLoader
 {
 public:
-    AsvScheme* GetScheme(std::string schemeName) const;
-    void AddScheme(AsvScheme* scheme);
+    std::shared_ptr<AsvScheme> GetScheme(std::string schemeName) const;
+    void AddScheme(std::unique_ptr<AsvScheme> scheme);
 private:
-    std::list<AsvScheme*> protocolList;
+    std::list<std::shared_ptr<AsvScheme>> protocolList;
 };
 

@@ -32,19 +32,19 @@ struct Calc2Protocol : public AsvScheme
 
 TEST_CASE( "AsvLoader GetProtocol", "[AsvLoader]" ) {
     AsvLoader loader;
-    REQUIRE ( loader.GetScheme("calc1") == NULL);
-    REQUIRE ( loader.GetScheme("calc2") == NULL);
-    REQUIRE ( loader.GetScheme("http") == NULL);
+    REQUIRE ( loader.GetScheme("calc1") == nullptr);
+    REQUIRE ( loader.GetScheme("calc2") == nullptr);
+    REQUIRE ( loader.GetScheme("http") == nullptr);
     
-    auto p1 = Singleton<Calc1Protocol>::Instance();
-    loader.AddScheme(p1);
-    REQUIRE (loader.GetScheme("calc1") == p1);
-    REQUIRE (loader.GetScheme("calc2") == NULL);
-    REQUIRE (loader.GetScheme("http") == NULL);
+    auto p1 = new Calc1Protocol;
+    loader.AddScheme(unique_ptr<AsvScheme>(p1));
+    REQUIRE (loader.GetScheme("calc1").get() == p1);
+    REQUIRE (loader.GetScheme("calc2") == nullptr);
+    REQUIRE (loader.GetScheme("http") == nullptr);
     
-    auto p2 = Singleton<Calc2Protocol>::Instance();
-    loader.AddScheme(p2);
-    REQUIRE (loader.GetScheme("calc1") == p1);
-    REQUIRE (loader.GetScheme("calc2") == p2);
-    REQUIRE (loader.GetScheme("http") == NULL);
+    auto p2 = new Calc2Protocol;
+    loader.AddScheme(unique_ptr<AsvScheme>(p2));
+    REQUIRE (loader.GetScheme("calc1").get() == p1);
+    REQUIRE (loader.GetScheme("calc2").get() == p2);
+    REQUIRE (loader.GetScheme("http") == nullptr);
 }

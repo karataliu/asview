@@ -6,7 +6,6 @@ AsvState::AsvState(string uri) : Uri(uri)
     auto asvUri = AsvUri::Create(uri);
     if(!asvUri) return;
     this->BoundUri = std::move(asvUri);
-    this->Scheme = NULL;
 }
 
 void AsvState::Load()
