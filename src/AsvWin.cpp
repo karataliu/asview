@@ -10,13 +10,9 @@ const char* AsvWin::clean = "                                               ";
 AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
 {
     initscr();
-
     start_color();
-    //init_pair(1, COLOR_BLUE, COLOR_WHITE);
     init_pair(1, COLOR_RED, COLOR_BLACK);
-
     raw();
-    //cbreak();
     nonl();
     noecho();
     keypad(stdscr, TRUE);
@@ -127,6 +123,10 @@ void AsvWin::MainLoop()
                 } catch(AsvException& exc){
                     this->Hint(exc.what());
                 }
+                break;
+            default:
+                std::string a("unknown key" + std::to_string(c));
+                this->Hint(a.c_str());
                 break;
         }
 
