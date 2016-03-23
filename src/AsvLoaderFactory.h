@@ -1,4 +1,4 @@
 #include "AsvLoader.h"
-#include "AsvState.h"
+#include <memory>
 
-extern AsvLoader* GetLoader();
+extern std::unique_ptr<AsvLoader> GetLoader();

@@ -7,7 +7,7 @@
 #include "AsvException.h"
 
 const char* AsvWin::clean = "                                               ";
-AsvWin::AsvWin(const AsvLoader* loader) : loader(loader)
+AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager))
 {
     initscr();
     start_color();
@@ -56,7 +56,7 @@ void AsvWin::freeMenu()
 
 void AsvWin::Start(std::string uri)
 {
-    chain.Add(AsvState::Create(uri, this->loader).release());
+    manager->chain.Add(AsvState::Create(uri, manager->loader.get()).release());
     Refresh();
     this->MainLoop();
 }
@@ -64,7 +64,7 @@ void AsvWin::Start(std::string uri)
 void AsvWin::Refresh()
 {
     this->Hint(clean);
-    Update(chain.Current());
+    Update(manager->chain.Current());
 }
 
 void AsvWin::Update(const AsvState *state)
@@ -109,16 +109,16 @@ void AsvWin::MainLoop()
                 menu_driver(menu, REQ_SCR_UPAGE);
                 break;
             case KEY_LEFT:
-                chain.Prev();
+                manager->chain.Prev();
                 Refresh();
                 break;
             case KEY_RIGHT:
-                chain.Next();
+                manager->chain.Next();
                 Refresh();
                 break;
             case 13: // ENTER
                 try{
-                    chain.Add(chain.Current()->Load1(item_index(current_item(menu))).release());
+                    manager->chain.Add(manager->chain.Current()->Load1(item_index(current_item(menu))).release());
                     Refresh();
                 } catch(AsvException& exc){
                     this->Hint(exc.what());

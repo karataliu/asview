@@ -2,20 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include "AsvState.h"
-#include "AsvChain.h"
+#include "AsvManager.h"
 #include "AsvLoader.h"
 
 class AsvWin
 {
 public:
-    AsvWin(const AsvLoader *);
+    AsvWin(std::unique_ptr<AsvManager> manager);
     ~AsvWin();
     void Start(std::string uri);
 private:
     static const char* clean;
 
-    AsvChain chain;
-    const AsvLoader* loader;
+    std::unique_ptr<AsvManager> manager;
     int itemsCount;
     WINDOW *win;
     MENU *menu;
