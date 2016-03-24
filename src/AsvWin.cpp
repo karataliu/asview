@@ -16,9 +16,7 @@ AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager)
     noecho();
     keypad(stdscr, TRUE);
 
-    win = newwin(20, 80, 0, 0);
-    keypad(win, TRUE);
-    box(win, 0, 0);
+    this->drawWin();
     mvwprintw(win, 1, 1, "%s", "My menu1");
     mvwhline(win, 2, 1, ACS_HLINE, 38);
     this->hint("F11 to exit.");
@@ -27,6 +25,15 @@ AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager)
     menu = NULL;
 
     this->currentState = nullptr;
+}
+
+void AsvWin::drawWin()
+{
+    int mx, my;
+    getmaxyx(stdscr, my, mx);
+    win = newwin(my, mx, 0, 0);
+    box(win, 0, 0);
+    keypad(win, TRUE);
 }
 
 AsvWin::~AsvWin()

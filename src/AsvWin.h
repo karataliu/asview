@@ -19,6 +19,7 @@ private:
     MENU *menu;
     ITEM **items;
 
+    void drawWin();
     void refreshWin();
     void update();
     void mainLoop();
