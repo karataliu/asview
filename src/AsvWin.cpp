@@ -25,6 +25,8 @@ AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager)
     refresh();
     wrefresh(win);
     menu = NULL;
+
+    this->currentState = nullptr;
 }
 
 AsvWin::~AsvWin()
@@ -61,19 +63,16 @@ void AsvWin::Start(std::string uri)
 
 void AsvWin::refreshWin()
 {
-    if(this->manager->CheckUpdate()){
-        this->hint(clean);
-        this->hint(this->manager->Message().c_str());
-        update();
-        wrefresh(win);
-    }
+    this->hint(clean);
+    this->hint(this->manager->Message().c_str());
+    update();
+    wrefresh(win);
 }
 
 void AsvWin::update()
 {
-    const AsvState *state = this->manager->Current();
-
-    if(!state) return;
+    std::shared_ptr<AsvState> state = this->manager->Current();
+    if(!state || state == currentState) return;
 
     wmove(win, 1, 1);
     wclrtoeol(win);
@@ -91,6 +90,8 @@ void AsvWin::update()
     set_menu_sub(menu, derwin(win, 16, 32, 3, 1));
     set_menu_mark(menu, " ");
     post_menu(menu);
+
+    this->currentState = state;
 }
 
 void AsvWin::mainLoop()

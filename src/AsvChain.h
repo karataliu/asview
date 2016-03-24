@@ -9,9 +9,9 @@ class AsvChain
 public:
     void Prev();
     void Next();
-    AsvState* Current();
-    void Add(AsvState* state);
+    std::shared_ptr<AsvState> Current();
+    void Add(std::shared_ptr<AsvState> state);
 private:
     std::size_t index {};
-    std::vector<std::unique_ptr<AsvState>> list;
+    std::vector<std::shared_ptr<AsvState>> list;
 };

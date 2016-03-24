@@ -12,6 +12,7 @@ public:
 private:
     static const char* clean;
     std::unique_ptr<AsvManager> manager;
+    std::shared_ptr<AsvState> currentState;
 
     int itemsCount;
     WINDOW *win;

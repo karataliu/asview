@@ -13,7 +13,7 @@ void AsvChain::Next()
     ++index;
 }
 
-void AsvChain::Add(AsvState* state)
+void AsvChain::Add(std::shared_ptr<AsvState> state)
 {
     if (index < list.size()){
         auto itr = list.begin();
@@ -22,12 +22,12 @@ void AsvChain::Add(AsvState* state)
         while(itr!=list.end()) itr = list.erase(itr);
     }
 
-    list.push_back(std::unique_ptr<AsvState>(state));
+    list.push_back(state);
 	++index;
 }
 
-AsvState* AsvChain::Current()
+std::shared_ptr<AsvState> AsvChain::Current()
 {
     if(index - 1 >= list.size()) return NULL;
-    return list[index-1].get();
+    return list[index-1];
 }

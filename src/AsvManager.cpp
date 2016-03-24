@@ -1,19 +1,19 @@
 #include "AsvManager.h"
 #include "AsvException.h"
 
-AsvManager::AsvManager(std::unique_ptr<AsvLoader> loader) : loader(std::move(loader)), updated(false) {}
+AsvManager::AsvManager(std::unique_ptr<AsvLoader> loader) : loader(std::move(loader)) {}
 
 void AsvManager::PushState(std::string uri)
 {
     try{
-        this->chain.Add(AsvState::Create(uri, this->loader.get()).release());
+        this->chain.Add(AsvState::Create(uri, this->loader.get()));
+        this->message = "";
     }catch(const AsvException& exc){
         this->message = std::string(exc.what());
     }
-    this->updated = true;
 }
 
-const AsvState* AsvManager::Current()
+const std::shared_ptr<AsvState> AsvManager::Current()
 {
     return this->chain.Current();
 }
@@ -26,39 +26,29 @@ const std::string& AsvManager::Message() const
 void AsvManager::Enter()
 {
     try{
-        this->chain.Add(this->chain.Current()->Load1(this->Index).release());
+        this->chain.Add(this->chain.Current()->Load1(this->Index));
+        this->message = "";
     } catch(AsvException& exc){
         this->message = std::string(exc.what());
     }
-
-    this->updated = true;
 }
 
 void AsvManager::Prev()
 {
     try{
         this->chain.Prev();
+        this->message = "";
     } catch(AsvException& exc){
         this->message = std::string(exc.what());
     }
-
-    this->updated = true;
 }
 
 void AsvManager::Next()
 {
     try{
         this->chain.Next();
+        this->message = "";
     } catch(AsvException& exc){
         this->message = std::string(exc.what());
     }
-
-    this->updated = true;
-}
-
-bool AsvManager::CheckUpdate()
-{
-    bool ret = this->updated;
-    this->updated = false;
-    return ret;
 }

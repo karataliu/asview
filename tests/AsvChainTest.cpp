@@ -3,15 +3,15 @@
 #include "../src/AsvChain.h"
 
 TEST_CASE( "AsvChain works", "[AsvChain]" ) {
-    auto state1 = new AsvState("calc://1");
+    auto state1 = std::make_shared<AsvState>("calc://1");
 	state1->Data.push_back(std::make_shared<AsvEntry>("1"));
 	state1->Data.push_back(std::make_shared<AsvEntry>("2"));
 	    
-    auto state2 = new AsvState("calc://1+2");
+    auto state2 = std::make_shared<AsvState>("calc://1+2");
 	state2->Data.push_back(std::make_shared<AsvEntry>("2"));
 	state2->Data.push_back(std::make_shared<AsvEntry>("3"));
 	
-    auto state3 = new AsvState("calc3://");
+    auto state3 = std::make_shared<AsvState>("calc3://");
     state3->Data.push_back(std::make_shared<AsvEntry>("2"));
     state3->Data.push_back(std::make_shared<AsvEntry>("3"));
 
@@ -31,8 +31,8 @@ TEST_CASE( "AsvChain works", "[AsvChain]" ) {
 
 
 TEST_CASE( "AsvChain invalid move", "[AsvChain]" ) {
-    auto state1 = new AsvState("calc://1");
-    auto state2 = new AsvState("calc://2");
+    auto state1 = std::make_shared<AsvState>("calc://1");
+    auto state2 = std::make_shared<AsvState>("calc://2");
 
     AsvChain chain;
     REQUIRE(chain.Current() == nullptr);

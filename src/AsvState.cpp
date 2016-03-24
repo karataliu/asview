@@ -47,9 +47,9 @@ unique_ptr<AsvState> AsvState::Load1(std::size_t index) const
     return s2;
 }
 
-unique_ptr<AsvState> AsvState::Create(const string& uri, const AsvLoader* loader)
+shared_ptr<AsvState> AsvState::Create(const string& uri, const AsvLoader* loader)
 {
-    auto state = unique_ptr<AsvState>(new AsvState(uri));
+    auto state = make_shared<AsvState>(uri);
     auto scheme = loader->GetScheme(state->BoundUri->Scheme);
     if (scheme == NULL)
         throw AsvException("scheme null");
