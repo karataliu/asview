@@ -3,11 +3,19 @@
 #include <string.h>
 #include "AsvState.h"
 #include "AsvWin.h"
-#include "AsvException.h"
+#include "signal.h"
+
+static AsvWin* currentWin;
+
+static void handle_winch(int sig){
+    if(!currentWin) return;
+    currentWin->drawWin();
+}
 
 const char* AsvWin::clean = "                                               ";
 AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager))
 {
+    // init screen
     initscr();
     start_color();
     init_pair(1, COLOR_RED, COLOR_BLACK);
@@ -15,32 +23,52 @@ AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager)
     nonl();
     noecho();
     keypad(stdscr, TRUE);
+    curs_set(0);
 
+    this->win   = NULL;
+    this->menu  = NULL;
     this->drawWin();
-    mvwprintw(win, 1, 1, "%s", "My menu1");
-    mvwhline(win, 2, 1, ACS_HLINE, 38);
-    this->hint("F11 to exit.");
-    refresh();
-    wrefresh(win);
-    menu = NULL;
 
-    this->currentState = nullptr;
+    currentWin = this;
+    struct sigaction sa;
+    memset(&sa, 0, sizeof(struct sigaction));
+    sa.sa_handler = handle_winch;
+    sigaction(SIGWINCH, &sa, NULL);
 }
 
 void AsvWin::drawWin()
 {
-    int mx, my;
-    getmaxyx(stdscr, my, mx);
-    win = newwin(my, mx, 0, 0);
+    if (win){
+        delwin(win);
+        endwin();
+        refresh();
+        clear();
+        win = NULL;
+    }
+
+    getmaxyx(stdscr, maxY, maxX);
+    win = newwin(maxY, maxX, 0, 0);
     box(win, 0, 0);
     keypad(win, TRUE);
+
+    mvwprintw(win, 1, 1, "%s", "My menu1");
+    mvwhline(win, 2, 1, ACS_HLINE, maxX-2);
+    mvwhline(win, maxY - 3, 1, ACS_HLINE, maxX-2);
+    this->hint("F11 to exit.");
+    refresh();
+    wrefresh(win);
+
+    this->currentState = nullptr;
+    this->refreshWin();
 }
 
 AsvWin::~AsvWin()
 {
     freeMenu();
-    delwin(win);
-    endwin();
+    if(win){
+        delwin(win);
+        endwin();
+    }
 }
 
 void AsvWin::freeMenu()
@@ -56,10 +84,9 @@ void AsvWin::freeMenu()
 
 void AsvWin::hint(const char* message)
 {
-    attron(COLOR_PAIR(1));
-    mvprintw(LINES - 1, 0, message);
-    attroff(COLOR_PAIR(1));
-    refresh();
+    wattron(this->win, COLOR_PAIR(1));
+    mvwprintw(this->win, LINES - 2, 1, message);
+    wattroff(this->win, COLOR_PAIR(1));
 }
 
 void AsvWin::Start(std::string uri)
@@ -82,19 +109,22 @@ void AsvWin::update()
     if(!state || state == currentState) return;
 
     wmove(win, 1, 1);
-    wclrtoeol(win);
     mvwprintw(win, 1, 1, "%s", state->Uri.c_str());
 
     this->freeMenu();
     itemsCount = state->Data.size() + 1;
     items = (ITEM **)calloc(itemsCount, sizeof(ITEM *));
     for(int i = 0; i < itemsCount - 1; ++i)
-        items[i] = new_item(state->Data[i]->id.c_str(), "     ");
+        items[i] = new_item(state->Data[i]->id.c_str(), "    ");
     items[itemsCount - 1] = new_item(NULL, NULL);
 
     menu = new_menu(items);
     set_menu_win(menu, win);
-    set_menu_sub(menu, derwin(win, 16, 32, 3, 1));
+    // need free this sub win?
+    auto sw = derwin(win, maxY - 5, maxX-2, 3, 1);
+    // box(sw, 0, 0);
+    set_menu_sub(menu, sw);
+    set_menu_format(menu, maxY - 6, 1);
     set_menu_mark(menu, " ");
     post_menu(menu);
 

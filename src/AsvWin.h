@@ -9,6 +9,7 @@ public:
     AsvWin(std::unique_ptr<AsvManager> manager);
     ~AsvWin();
     void Start(std::string uri);
+    void drawWin();
 private:
     static const char* clean;
     std::unique_ptr<AsvManager> manager;
@@ -19,7 +20,8 @@ private:
     MENU *menu;
     ITEM **items;
 
-    void drawWin();
+    int maxX, maxY;
+
     void refreshWin();
     void update();
     void mainLoop();
