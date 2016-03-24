@@ -12,7 +12,6 @@ static void handle_winch(int sig){
     currentWin->drawWin();
 }
 
-const char* AsvWin::clean = "                                               ";
 AsvWin::AsvWin(std::unique_ptr<AsvManager> manager) : manager(std::move(manager))
 {
     // init screen
@@ -46,15 +45,23 @@ void AsvWin::drawWin()
         win = NULL;
     }
 
-    getmaxyx(stdscr, maxY, maxX);
-    win = newwin(maxY, maxX, 0, 0);
+    getmaxyx(stdscr, scrHeight, scrWidth);
+    win = newwin(scrHeight, scrWidth, 0, 0);
     box(win, 0, 0);
     keypad(win, TRUE);
 
-    mvwprintw(win, 1, 1, "%s", "My menu1");
-    mvwhline(win, 2, 1, ACS_HLINE, maxX-2);
-    mvwhline(win, maxY - 3, 1, ACS_HLINE, maxX-2);
-    this->hint("F11 to exit.");
+    mvwhline(win, 2, 1, ACS_HLINE, scrWidth - 2);
+    mvwaddch(win, 2, 0, ACS_LTEE	);
+    mvwaddch(win, 2, scrWidth-1, ACS_RTEE);
+    mvwhline(win, scrHeight - 3, 1, ACS_HLINE, scrWidth-2);
+    mvwaddch(win, scrHeight - 3, 0, ACS_LTEE	);
+    mvwaddch(win, scrHeight - 3, scrWidth-1, ACS_RTEE);
+    mvwhline(win, scrHeight - 2, scrWidth - 2 - MessageBarWidth, ACS_VLINE, 1);
+    mvwaddch(win, scrHeight - 3, scrWidth - 2 - MessageBarWidth, ACS_TTEE);
+    mvwaddch(win, scrHeight - 1, scrWidth - 2 - MessageBarWidth, ACS_BTEE);
+
+    this->showText("F11 to exit.", BOTTOM2);
+
     refresh();
     wrefresh(win);
 
@@ -82,13 +89,6 @@ void AsvWin::freeMenu()
     }
 }
 
-void AsvWin::hint(const char* message)
-{
-    wattron(this->win, COLOR_PAIR(1));
-    mvwprintw(this->win, LINES - 2, 1, message);
-    wattroff(this->win, COLOR_PAIR(1));
-}
-
 void AsvWin::Start(std::string uri)
 {
     this->manager->PushState(uri);
@@ -97,8 +97,7 @@ void AsvWin::Start(std::string uri)
 
 void AsvWin::refreshWin()
 {
-    this->hint(clean);
-    this->hint(this->manager->Message().c_str());
+    this->showText(this->manager->Message(), BOTTOM1);
     update();
     wrefresh(win);
 }
@@ -108,8 +107,7 @@ void AsvWin::update()
     std::shared_ptr<AsvState> state = this->manager->Current();
     if(!state || state == currentState) return;
 
-    wmove(win, 1, 1);
-    mvwprintw(win, 1, 1, "%s", state->Uri.c_str());
+    this->showText(state->Uri, HEAD);
 
     this->freeMenu();
     itemsCount = state->Data.size() + 1;
@@ -121,10 +119,10 @@ void AsvWin::update()
     menu = new_menu(items);
     set_menu_win(menu, win);
     // need free this sub win?
-    auto sw = derwin(win, maxY - 5, maxX-2, 3, 1);
+    auto sw = derwin(win, scrHeight - 5, scrWidth-2, 3, 1);
     // box(sw, 0, 0);
     set_menu_sub(menu, sw);
-    set_menu_format(menu, maxY - 6, 1);
+    set_menu_format(menu, scrHeight - 6, 1);
     set_menu_mark(menu, " ");
     post_menu(menu);
 
@@ -164,10 +162,40 @@ void AsvWin::mainLoop()
                 break;
             default:
                 std::string a("unknown key" + std::to_string(c));
-                this->hint(a.c_str());
+                this->showText(a, BOTTOM1);
                 break;
         }
 
         this->refreshWin();
+    }
+}
+
+void AsvWin::showText(std::string message, int y, int x, size_t maxWidth)
+{
+    size_t len = message.length();
+    if(len > maxWidth){
+        message = message.substr(0, maxWidth);
+    }else if(len < maxWidth){
+        message.insert(len, maxWidth - len, ' ');
+    }
+
+    mvwprintw(this->win, y, x, message.c_str());
+}
+
+
+void AsvWin::showText(std::string message, Layout layout)
+{
+    switch(layout){
+        case HEAD:
+            this->showText(message, 1, 1, this->scrWidth - 2);
+            break;
+        case BOTTOM1:
+            wattron(this->win, COLOR_PAIR(1));
+            this->showText(message, scrHeight - 2, 1, scrWidth - 3 - MessageBarWidth);
+            wattroff(this->win, COLOR_PAIR(1));
+            break;
+        case BOTTOM2:
+            this->showText(message, scrHeight - 2, scrWidth - 1 - MessageBarWidth, MessageBarWidth);
+            break;
     }
 }

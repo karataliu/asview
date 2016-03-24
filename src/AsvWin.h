@@ -5,13 +5,18 @@
 
 class AsvWin
 {
+    enum Layout{
+        HEAD, BOTTOM1, BOTTOM2
+    };
+
 public:
     AsvWin(std::unique_ptr<AsvManager> manager);
     ~AsvWin();
     void Start(std::string uri);
     void drawWin();
 private:
-    static const char* clean;
+    static const size_t MessageBarWidth { 16 } ;
+
     std::unique_ptr<AsvManager> manager;
     std::shared_ptr<AsvState> currentState;
 
@@ -20,11 +25,11 @@ private:
     MENU *menu;
     ITEM **items;
 
-    int maxX, maxY;
-
+    int scrWidth, scrHeight;
     void refreshWin();
     void update();
     void mainLoop();
     void freeMenu();
-    void hint(const char* message);
+    void showText(std::string message, int y, int x, size_t maxWidth);
+    void showText(std::string message, Layout layout);
 };
